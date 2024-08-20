@@ -20,7 +20,7 @@ function Order() {
     dispatch(setOrderCalculateDetail(null));
   }, []);
   useEffect(() => {
-    if (!sender){
+    if (!sender) {
       navigate("/");
     }
   }, [sender]);
@@ -29,21 +29,25 @@ function Order() {
   }
   return (
     <div style={{ width: "100%" }}>
-      <AddBeneficiaryModal />
-      <SendersList />
-      <SenderProfile />
-      <BeneficiaryDetailCard />
-      <div
-        style={{
-          width: "100%",
-          display: "flex",
-          justifyContent: "space-between",
-          gap: "1%",
-        }}
-      >
-        <DefaultBankDetailCard />
-        <OrderCalculate />
-      </div>
+    {sender ? (
+      <>
+        <AddBeneficiaryModal />
+        <SendersList />
+        <SenderProfile />
+        <BeneficiaryDetailCard />
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "space-between",
+            gap: "1%",
+          }}
+        >
+          <DefaultBankDetailCard />
+          <OrderCalculate />
+        </div>
+      </>
+      ) : navigate("/")}
     </div>
   );
 }
