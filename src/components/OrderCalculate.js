@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { Row, Col, Input, Select, Divider, Typography, Card } from "antd";
 import OrderDetailModal from "./OrderDetail";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,14 +20,13 @@ const CurrencyConverter = () => {
   const loading = useSelector(getCalculateLoading);
   const calculateDetail = useSelector(getCalculateDetail);
   useEffect(() => {
-    if(calculateDetail){
+    if (calculateDetail) {
       setValues(calculateDetail);
     }
-  }, [calculateDetail])
+  }, [calculateDetail]);
   const calculateFromSendAmount = () => {
     dispatch(calculateOrderApiCall({ sent_usd: sendAmount }));
     console.log("calculatedReceiveAmount", calculateDetail);
-  
   };
   const setValues = (value) => {
     setReceiveAmount(value.total_birr.toFixed(2));
@@ -38,13 +37,11 @@ const CurrencyConverter = () => {
   const calculateFromReceiveAmount = () => {
     dispatch(calculateOrderApiCall({ total_birr: receiveAmount }));
     console.log("calculatedReceiveAmount", calculateDetail);
-    
   };
 
   const calculateFromGrandTotal = () => {
     dispatch(calculateOrderApiCall({ total_usd: grandTotal }));
     console.log("calculatedReceiveAmount", calculateDetail);
-  
   };
 
   return (
@@ -104,11 +101,15 @@ const CurrencyConverter = () => {
             level={5}
             style={{ color: "#FF6600", margin: 0, textAlign: "left" }}
           >
-            Exchange Rate: {exchangeRate.toFixed(4)}
+            Exchange Rate: { calculateDetail && calculateDetail.rate.toFixed(4)}
           </Title>
         </Col>
         <Col span={12} style={{ textAlign: "right" }}>
-         {loading && <Text strong style={{ color: "#FF6600" }}>Calculating...</Text>}
+          {loading && (
+            <Text strong style={{ color: "#FF6600" }}>
+              Calculating...
+            </Text>
+          )}
         </Col>
       </Row>
 
@@ -118,8 +119,8 @@ const CurrencyConverter = () => {
         <Col span={12}>
           <Text strong>Charge:</Text>
           <Text style={{ color: "#595959", paddingLeft: "8px" }}>
-            {calculateDetail && calculateDetail.charge
-              ? calculateDetail.charge
+            {calculateDetail && calculateDetail.commission
+              ? calculateDetail.commission
               : 0}
           </Text>
         </Col>
