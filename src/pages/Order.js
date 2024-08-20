@@ -9,7 +9,7 @@ import { setOrderCalculateDetail } from "../store/reducers/orders";
 import { useDispatch, useSelector } from "react-redux";
 import { getSender } from "../store/reducers/senders";
 import { useNavigate } from "react-router-dom";
-function Order(props) {
+function Order() {
   const navigate = useNavigate();
   const sender = useSelector(getSender);
   const dispatch = useDispatch();

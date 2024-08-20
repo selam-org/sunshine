@@ -1,14 +1,11 @@
-import React, { useState, useRef } from "react";
+import React from "react";
 import { Modal, Button, Typography, Row, Col, Divider } from "antd";
 import {
   CheckCircleOutlined,
-  PrinterOutlined,
   HomeOutlined,
   PlusOutlined,
 } from "@ant-design/icons";
 import {
-  getBeneficiary,
-  getSender,
   setSendersForNext,
   setSender,
 } from "../store/reducers/senders";
@@ -18,30 +15,19 @@ import {
   getIsPrintOrderModalOpen,
   resetState,
 } from "../store/reducers/orders";
-import html2pdf from "html2pdf.js";
 import { useNavigate } from "react-router-dom";
-import Receipt from "./Receipt";
 
 const { Text, Title } = Typography;
 
 const OrderDetailModal = () => {
-  const [isModalVisible, setIsModalVisible] = useState(false);
   const navigate = useNavigate();
   const order = useSelector(getCreatedOrder);
   const dispatch = useDispatch();
   const isPrintOrderModalOpen = useSelector(getIsPrintOrderModalOpen);
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
 
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
 
-  const handlePrintReceipt = () => {
-    // window.print(); // Basic print functionality
-    // handlePrint();
-  };
+
+
 
   const goToHomePage = () => {
     dispatch(resetState());

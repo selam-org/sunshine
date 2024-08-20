@@ -1,14 +1,12 @@
 import React, { useState , useEffect} from "react";
 import { Button, Input, Select, Typography, Space, Card, Row, Col } from "antd";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import SenderTaps from "../components/Taps";
 import SenderList from "../components/SendersList";
 import AddSenderModal from "../components/AddSenderModal";
 import {
-  isSendersDialogOpen,
   setSenderIsDialog,
   getSendersApi,
-  getSenders,
   setBeneficiary,
   setSender,
 } from "../store/reducers/senders";
@@ -19,8 +17,7 @@ const { Text } = Typography;
 
 const CustomerSenderComponent = () => {
   const dispatch = useDispatch();
-  const isDialogOpen = useSelector(isSendersDialogOpen);
-  const senders = useSelector(getSenders);
+
 
   const [phone, setPhone] = useState("");
   const [isPhoneValid, setIsPhoneValid] = useState(false);

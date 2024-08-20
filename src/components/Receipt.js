@@ -1,11 +1,10 @@
 import React, { useRef } from "react";
-import html2pdf from "html2pdf.js";
 import { Col, Row, Button } from "antd";
 // import "./Receipt.css";
 import "../style/components/receipt.css";
 import { useReactToPrint } from "react-to-print";
 import { PrinterOutlined } from "@ant-design/icons";
-const Receipt = ({ order }) => {
+const Receipt = () => {
   const componentRef = useRef();
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
@@ -41,7 +40,6 @@ const Receipt = ({ order }) => {
           color: "#231e61",
           fontSize: "16px",
           fontWeight: "bold",
-          // backgroundColor: "green",
         }}
         onClick={handlePrint}
       >

@@ -1,7 +1,7 @@
 import React from "react";
 import { Table, Tag, Space, Typography } from "antd";
 import moment from "moment";
-import { getOrders, getOrdersLoading } from "../store/reducers/orders";
+import { getOrders } from "../store/reducers/orders";
 import { useSelector } from "react-redux";
 
 const { Text } = Typography;
