@@ -1,0 +1,19 @@
+.custom-menu .ant-menu-item-selected {
+    background-color: #3f3c85 !important; /* Subtle, soft purple for the active tab */
+    color: #ffcc00 !important; /* Bright, elegant gold for active tab text */
+    border-radius: 8px; /* Slightly rounded corners for elegance */
+  }
+  
+  .custom-menu .ant-menu-item-selected .navbar-link {
+    color: #ffcc00 !important; /* Set active link text to gold */
+  }
+  
+  .navbar-link {
+    color: #ffffff;
+    transition: color 0.3s ease;
+  }
+  
+  .navbar-link:hover {
+    color: #ccccff; /* Soft light purple on hover */
+  }
+  

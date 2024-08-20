@@ -1,0 +1,208 @@
+/* @media print {
+    @page {
+        size: 79mm 200mm;
+    }
+} */
+
+.receipt-content {
+    /* width: 50%; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0px 10px;
+    justify-content: center ;
+    margin-top: 22px;
+}
+
+p {
+    margin: 0;
+    padding: 0;
+    font-size: 10px;
+}
+
+.horizontal-line {
+    background-color: black;
+    padding: 0.7px;
+    width: 100%;
+    margin: 2px 2px;
+    box-shadow: black 1px 0px 1px;
+}
+
+.receipt-title {
+    font-weight: 700;
+    font-size: 9px;
+    letter-spacing: -0.4px;
+}
+
+.receipt-title-bottom {
+    margin-bottom: 3px;
+}
+
+.receipt-logo {
+    margin: 2px 0px;
+}
+
+.receipt-agency-title {
+    font-weight: 800;
+    font-size: 9.5px;
+    letter-spacing: 0px;
+    margin-bottom: 1px;
+}
+
+.agency-location {
+    margin-top: 4px;
+}
+
+.agency-row {
+    display: flex;
+    justify-content: start;
+    width: 210px;
+    margin: 3px 0px;
+}
+
+.license {
+    margin-right: 90px;
+}
+
+.tel {
+    margin-right: 40px;
+}
+
+.agency-info {
+    font-size: 8px;
+}
+
+.copy-to {
+    width: 100%;
+    background-color: black;
+    margin-top: 3px;
+    color: white;
+    font-size: 11px;
+    padding-top: 1px;
+    padding-bottom: 4px;
+    display: flex;
+    justify-content: center;
+    border-radius: 1px;
+}
+
+.ant-row {
+    width: 100%;
+}
+
+.key-pair {
+    width: 100%;
+    margin-bottom: 3px;
+}
+
+.key-pair-title {
+    margin-bottom: 7px;
+}
+
+.key-pair-row {
+    padding: 0px 8px;
+    margin: 3px 0px;
+}
+
+.key-col,
+.key-col p {
+    font-weight: 400;
+    font-size: 9.5px;
+}
+
+.pair-col p {
+    font-weight: 600;
+    font-size: 9.5px;
+}
+
+.pair-col-bold,
+.pair-col-bold p {
+    font-weight: 800;
+    font-size: 9.5px;
+}
+
+.amount-title {
+    /* margin-bottom: -14px; */
+    font-size: 10px;
+    font-weight: bolder;
+}
+
+.amount-title p {
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.receipt-table {
+    width: 100%;
+}
+
+.receipt-table {
+    border: 1.5px solid black;
+}
+
+.row {
+    display: flex;
+    border-bottom: 1.5px solid black;
+}
+
+.row:last-child {
+    border-bottom: none;
+}
+
+.td-1 {
+    flex: 9;
+}
+
+.td-2 {
+    flex: 4;
+    text-align: end;
+    border-left: 1.5px solid black;
+}
+
+.td {
+    padding: 1px;
+    padding-left: 4px;
+}
+
+.reward-row {
+    padding-bottom: 13px;
+}
+
+.confirmation-no-value {
+    padding: 0px 18px;
+    border: 1px solid black;
+    border-radius: 3px;
+    font-weight: 800;
+}
+
+.receipt-info {
+    align-items: center;
+    margin: 0px 12px;
+    margin-top: 5px;
+}
+
+.receip-info-capital {
+    font-size: 10px;
+}
+
+.red-info {
+    color: red;
+    font-weight: 600;
+    margin-top: 7px;
+}
+
+.sign-info {
+    text-align: center;
+    font-size: 9px;
+    margin-top: 35px;
+    margin-bottom: 70px;
+}
+
+.send-signature {
+    margin-bottom: 70px;
+}
+
+.page-break {
+    padding: 2px;
+    margin-bottom: 1180px;
+    margin-top: 40px;
+}

@@ -1,61 +1,121 @@
-import React from 'react';
-import { Card, Typography, Row, Col, Button, Select } from 'antd';
+import React, { useEffect, useState } from "react";
+import { Card, Typography, Row, Col, Select, Divider } from "antd";
+import AddBankAccountModal from "./AddBankDetail";
+import { getBeneficiary, setDefaultBank } from "../store/reducers/senders";
+import { useDispatch, useSelector } from "react-redux";
 
 const { Title, Text } = Typography;
 const { Option } = Select;
 
-const bankDetails = [
-  { id: 1, bankName: 'Bank of America', accountNumber: '1234567890' },
-  { id: 2, bankName: 'Chase Bank', accountNumber: '0987654321' },
-  { id: 3, bankName: 'Wells Fargo', accountNumber: '1122334455' }
-];
-
 const DefaultBankDetailCard = () => {
-  const defaultBankDetail = bankDetails[0]; // Assuming the first one is the default
+  const dispatch = useDispatch();
+  const beneficiaryData = useSelector(getBeneficiary);
+  const [selectedBank, setSelectedBank] = useState(null);
+
+  useEffect(() => {
+    if (beneficiaryData?.default_bank) {
+      setSelectedBank(beneficiaryData.default_bank.id);
+    }
+  }, [beneficiaryData]); // Update selectedBank when beneficiaryData changes
+
+  const handleBankChange = (value) => {
+    setSelectedBank(value);
+    console.log("Selected Bank:", value);
+    if (!beneficiaryData) {
+      return;
+    }
+    const bank = beneficiaryData.accounts.find((bank) => bank.bank === value);
+    if (!bank) {
+      return;
+    }
+    console.log("Selected Bank:", bank);
+    dispatch(setDefaultBank(bank));
+  };
 
   return (
     <Card
       style={{
-        width: '100%',
-        margin: '1% 0 0 0', // Center the card with margin
-        borderRadius: '10px',
-        border: '1px solid #d9d9d9',
-        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-        backgroundColor: '#ffffff',
+        width: "100%",
+        margin: "1% 0 0 0",
+        borderRadius: "12px",
+        border: "1px solid #e0e0e0",
+        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+        backgroundColor: "#ffffff",
       }}
-      bordered={false}
     >
-      <Title level={4} style={{ marginBottom: '16px' }}>
+      <Title
+        level={4}
+        style={{ color: "#231e61", fontFamily: "Bebas Neue, sans-serif" }}
+      >
         Beneficiary's Bank Detail
       </Title>
-      <Row gutter={[16, 16]}>
-        <Col span={12}>
-          <Text strong>Bank Name:</Text>
-          <div style={{ paddingTop: '8px' }}>
-            <Text>{defaultBankDetail.bankName}</Text>
-          </div>
-        </Col>
-        <Col span={12}>
-          <Text strong>Account Number:</Text>
-          <div style={{ paddingTop: '8px' }}>
-            <Text>{defaultBankDetail.accountNumber}</Text>
-          </div>
-        </Col>
-      </Row>
-      <div style={{ marginTop: '24px' }}>
-        <Select
-          placeholder="Choose a bank detail"
-          style={{ width: '100%', marginBottom: '16px' }}
-        >
-          {bankDetails.map(detail => (
-            <Option key={detail.id} value={detail.id}>
-              {detail.bankName} - {detail.accountNumber}
+      <Divider style={{ margin: "12px 0" }} />
+      {beneficiaryData && beneficiaryData.default_bank ? (
+        <Row gutter={[24, 24]} style={{ marginBottom: "24px" }}>
+          <Col span={12}>
+            <Text strong style={{ color: "#231e61" }}>
+              Bank Name:
+            </Text>
+            <div style={{ paddingTop: "8px" }}>
+              <Text style={{ color: "#595959" }}>
+                {beneficiaryData.default_bank.bank}
+              </Text>
+            </div>
+          </Col>
+          <Col span={12}>
+            <Text strong style={{ color: "#231e61" }}>
+              Account Number:
+            </Text>
+            <div style={{ paddingTop: "8px" }}>
+              <Text style={{ color: "#595959" }}>
+                {beneficiaryData.default_bank.account}
+              </Text>
+            </div>
+          </Col>
+        </Row>
+      ) : (
+        <div style={{ textAlign: "left", marginBottom: "24px" }}>
+          <Text strong style={{ color: "#231e61" }}>
+            No Bank Detail Found
+          </Text>
+        </div>
+      )}
+
+      <Select
+        placeholder="Choose a bank detail"
+        value={
+          beneficiaryData && beneficiaryData.default_bank
+            ? `${beneficiaryData.default_bank.bank} - ${beneficiaryData.default_bank.account}`
+            : null
+        } // Bind selected value to state
+        onChange={handleBankChange} // Update state on change
+        disabled={!beneficiaryData} // Disable if beneficiaryData is null or undefined
+        style={{
+          width: "100%",
+          borderRadius: "8px",
+          borderColor: "#e0e0e0",
+          backgroundColor: "#f7f7f7",
+          marginBottom: "24px",
+          color: "#595959",
+        }}
+        dropdownStyle={{ borderRadius: "8px" }}
+      >
+        {beneficiaryData &&
+          beneficiaryData.accounts.map((detail) => (
+            <Option
+              onClick={() => {
+                console.log("clicked");
+              }}
+              key={detail.bank}
+              value={detail.bank}
+            >
+              {detail.bank} - {detail.account}
             </Option>
           ))}
-        </Select>
-        <Button type="primary" block>
-          Add New Bank Detail
-        </Button>
+      </Select>
+      <div>
+        <AddBankAccountModal disabled={!beneficiaryData} />{" "}
+        {/* Disable if beneficiaryData is null or undefined */}
       </div>
     </Card>
   );

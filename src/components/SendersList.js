@@ -1,64 +1,78 @@
 import React, { useState } from "react";
-import { Button, Modal } from "antd";
+import { Button, Modal, Typography } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import Loading from "./Loading";
-import senders, {
+import {
   getSendersLoading,
   isSendersDialogOpen,
   getSenders,
   setSenderIsDialog,
 } from "../store/reducers/senders";
 import SendersItem from "./SenderListItem";
+
 const App = (props) => {
-  const { isDisabled, onClick } = props;
   const dispatch = useDispatch();
   const isDialogOpen = useSelector(isSendersDialogOpen);
   const senders = useSelector(getSenders);
   const loading = useSelector(getSendersLoading);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  console.log(senders);
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
+
   const handleCancel = () => {
-    // setIsModalOpen(false);
     dispatch(setSenderIsDialog({ open: false }));
   };
+
+
   return (
     <>
-      <Button disabled={isDisabled} onClick={onClick} type="primary">
-        Search{" "}
-      </Button>
       <Modal
-        title="Basic Modal"
+        title={
+          <Typography.Title
+            level={3}
+            style={{
+              margin: 0,
+              textAlign: "left",
+              color: "#231e61", // Primary brand color
+              fontFamily: "Bebas Neue, sans-serif",
+            }}
+          >
+            Senders / Customers
+          </Typography.Title>
+        }
         open={isDialogOpen}
-        // onOk={handleOk}
-        footer={null}
+        footer={null} // Remove default footer buttons
         onCancel={handleCancel}
+        bodyStyle={{
+          overflowY: "scroll",
+          scrollbarWidth: "none", /* For Firefox */
+          padding: "14px", // Added padding for inner content
+        }}
         style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-          bodyStyle={{
-            maxHeight: "70vh", // Set a fixed height for the modal content
-            overflowY: 'scroll',
-            scrollbarWidth: 'none', /* For Firefox */
-            msOverflowStyle: 'none',  /* For Internet Explorer and Edge */          }}
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+        
       >
         <div
-         style={{
-            height: "60vh", // Ensure it takes the full height of the modal body
-            width: "50vw",  // Ensure it takes the full width of the modal body
+          style={{
+            height: "60vh", // Set height of the modal
+            width: "60vw", // Full width within the modal
+            padding: "0 16px", // Add padding for a cleaner layout
           }}
         >
           {loading ? (
             <Loading />
           ) : (
             <>
+            {senders.length === 0 ? (<div>
+              <Typography.Text>
+                No senders found
+              </Typography.Text>
+            </div>) : (
+             <> {senders.map(sender=><SendersItem sender={sender}/>)}</>
+            )}
+              {/* <SendersItem />
               <SendersItem />
-              <SendersItem />
-
+              <SendersItem /> */}
             </>
           )}
         </div>
@@ -66,4 +80,5 @@ const App = (props) => {
     </>
   );
 };
+
 export default App;

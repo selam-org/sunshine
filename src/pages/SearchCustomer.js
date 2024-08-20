@@ -1,14 +1,18 @@
-import React, { useState } from "react";
-import { Button, Input, Select, Typography } from "antd";
+import React, { useState , useEffect} from "react";
+import { Button, Input, Select, Typography, Space, Card, Row, Col } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import SenderTaps from "../components/Taps";
 import SenderList from "../components/SendersList";
+import AddSenderModal from "../components/AddSenderModal";
 import {
   isSendersDialogOpen,
   setSenderIsDialog,
   getSendersApi,
   getSenders,
+  setBeneficiary,
 } from "../store/reducers/senders";
+
+import { setOrderCalculateDetail } from "../store/reducers/orders";
 const { Option } = Select;
 const { Text } = Typography;
 
@@ -16,97 +20,139 @@ const CustomerSenderComponent = () => {
   const dispatch = useDispatch();
   const isDialogOpen = useSelector(isSendersDialogOpen);
   const senders = useSelector(getSenders);
-  const validateUSPhoneNumber = (phoneNumber) => {
-    // Regular expression to match exactly 10 digits
-    const phoneRegex = /^[0-9]{10}$/;
 
-    // Test the phoneNumber against the regex
+  const [phone, setPhone] = useState("");
+  const [isPhoneValid, setIsPhoneValid] = useState(false);
+
+  const validateUSPhoneNumber = (phoneNumber) => {
+    const phoneRegex = /^[0-9]{10}$/; // Regular expression to match exactly 10 digits
     return phoneRegex.test(phoneNumber);
   };
+
+  useEffect(() => {
+    dispatch(setBeneficiary(null));
+    dispatch(setOrderCalculateDetail(null));
+    console.log("senders");
+  }, []);
   const handleSearch = () => {
     if (!isPhoneValid) {
       return;
     }
-    dispatch(getSendersApi());
-    console.log("Enter key pressed with phone number:", phone);
-    console.log("dialog 2: ", isDialogOpen);
+    dispatch(getSendersApi({ phone_number: phone }));
   };
+
   const handleKeyPress = (e) => {
-    console.log("dialog: ", isDialogOpen);
     if (e.key === "Enter") {
       handleSearch();
     }
   };
+
   const handlePhoneInputChange = (e) => {
-    console.log(e.target.value);
     const value = e.target.value;
     setPhone(value);
 
     if (validateUSPhoneNumber(value)) {
-      console.log("Valid US phone number");
       setIsPhoneValid(true);
     } else {
-      console.log("Invalid phone number");
       setIsPhoneValid(false);
       dispatch(setSenderIsDialog({ open: false }));
     }
   };
 
-  const [phone, setPhone] = useState("");
-  const [isPhoneValid, setIsPhoneValid] = useState(false);
   return (
-    <div
+    <Card
       style={{
-        border: "1px solid #d9d9d9",
-        padding: "16px",
-        borderRadius: "5px",
-        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+        margin: "0 auto",
+        borderRadius: "12px",
+        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+        padding: "24px",
+        backgroundColor: "#f9f9f9",
       }}
     >
-      <div
-        style={{
-          marginBottom: "16px",
-          borderBottom: "1px solid #e8e8e8",
-          paddingBottom: "8px",
-        }}
-      >
-        <Text strong>Customer / Sender</Text>
+      <div style={{ textAlign: "left", marginBottom: "24px" }}>
+        <Text
+          strong
+          style={{
+            fontSize: "24px",
+            color: "#231e61",
+            fontFamily: "Bebas Neue, sans-serif",
+          }}
+        >
+          Customer / Sender
+        </Text>
       </div>
 
       {/* Tabs for Different Options */}
       <SenderTaps />
 
-      {/* Telephone Input Section */}
-      <div
-        style={{ display: "flex", alignItems: "center", marginBottom: "16px" }}
+      <Space
+        direction="vertical"
+        size="large"
+        style={{ width: "100%", marginTop: "24px" }}
       >
-        <Select defaultValue="US +1" style={{ width: 100, marginRight: "8px" }}>
-          <Option value="US +1">US +1</Option>
-          <Option value="ET +251">ET +251</Option>
-          {/* Add more options as needed */}
-        </Select>
+        {/* Telephone Input Section */}
+        <Row gutter={16}>
+          <Col span={8}>
+            <Select
+              defaultValue="US +1"
+              style={{
+                width: "100%",
+                borderRadius: "8px",
+                backgroundColor: "#ffffff",
+                borderColor: "#d9d9d9",
+                height: "40px",
+              }}
+            >
+              <Option value="US +1">US +1</Option>
+              <Option value="ET +251">ET +251</Option>
+            </Select>
+          </Col>
+          <Col span={16}>
+            <Input
+              onChange={handlePhoneInputChange}
+              onKeyDown={handleKeyPress}
+              placeholder="Telephone"
+              style={{
+                width: "100%",
+                borderRadius: "8px",
+                backgroundColor: "#ffffff",
+                borderColor: isPhoneValid ? "#52c41a" : "#ff4d4f",
+                height: "40px",
+              }}
+            />
+          </Col>
+        </Row>
 
-        <Input
-          onChange={handlePhoneInputChange}
-          onKeyDown={handleKeyPress}
-          placeholder="Telephone"
-          style={{ flex: 1 }}
-        />
-      </div>
+        {/* New Customer and Search Button */}
+        <Row gutter={16} justify="space-between">
+          <Col>
+            <AddSenderModal />
+          </Col>
+          <Col>
 
-      {/* New Customer and Search Button */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <a href="#">New Customer</a>
+            <SenderList />
 
-        <SenderList isDisabled={!isPhoneValid} onClick={handleSearch} />
-      </div>
-    </div>
+
+            <Button
+              disabled={!isPhoneValid}
+              onClick={handleSearch}
+              type="primary"
+              style={{
+                backgroundColor: isPhoneValid ? "#52c41a" : "#d9d9d9",
+                borderColor: isPhoneValid ? "#52c41a" : "#d9d9d9",
+                borderRadius: "8px",
+                fontWeight: "500",
+                padding: "0 24px",
+                height: "40px",
+                width: "100%",
+              }}
+            >
+              Search
+            </Button>
+          </Col>
+        </Row>
+      </Space>
+    </Card>
   );
 };
 
