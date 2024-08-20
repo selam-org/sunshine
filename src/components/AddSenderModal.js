@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Modal, Button, Form, Input } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -7,6 +7,8 @@ import {
   addSenderApi,
   getAddSenderError,
   getAddSenderLoading,
+  setSender,
+  getSender,
 } from "../store/reducers/senders";
 import { useNavigate } from "react-router-dom";
 const AddSenderModal = () => {
@@ -16,7 +18,7 @@ const AddSenderModal = () => {
   const isModalOpen = useSelector(isAddSenderDialogOpen);
   const navigate = useNavigate();
   const [form] = Form.useForm(); // Antd Form instance
-
+  
   const showModal = () => {
     dispatch(setAddSenderDialog({ open: true }));
   };
@@ -24,19 +26,24 @@ const AddSenderModal = () => {
   const handleCancel = () => {
     dispatch(setAddSenderDialog({ open: false }));
   };
-
+  const sender = useSelector(getSender);
   const onFinish = (values) => {
     console.log("Form values", values);
+    dispatch(setSender(null))
     dispatch(addSenderApi(values));
     form.resetFields(); // Clear form fields after submission
-    navigate("/order"); // Redirect to the senders page
+    // navigate("/order"); // Redirect to the senders page
     
   };
 
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
-
+  useEffect(() => {
+    if (sender) {
+      navigate("/order");
+    } 
+  }, [sender]);
   return (
     <>
       <Button

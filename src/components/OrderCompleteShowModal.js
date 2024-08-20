@@ -10,6 +10,7 @@ import {
   getBeneficiary,
   getSender,
   setSendersForNext,
+  setSender,
 } from "../store/reducers/senders";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -43,6 +44,8 @@ const OrderDetailModal = () => {
   };
 
   const goToHomePage = () => {
+    dispatch(resetState());
+    dispatch(setSender(null));
     navigate("/"); // Navigate to the home page
   };
 

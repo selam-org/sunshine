@@ -6,16 +6,29 @@ import OrderCalculate from "../components/OrderCalculate";
 import AddBeneficiaryModal from "../components/AddNewBeneficiaryModal";
 import SendersList from "../components/SendersList";
 import { setOrderCalculateDetail } from "../store/reducers/orders";
-import { useDispatch } from "react-redux";
-
+import { useDispatch, useSelector } from "react-redux";
+import { getSender } from "../store/reducers/senders";
+import { useNavigate } from "react-router-dom";
 function Order(props) {
+  const navigate = useNavigate();
+  const sender = useSelector(getSender);
   const dispatch = useDispatch();
   useEffect(() => {
+    if (!sender) {
+      navigate("/");
+    }
     dispatch(setOrderCalculateDetail(null));
   }, []);
+  useEffect(() => {
+    if (!sender){
+      navigate("/");
+    }
+  }, [sender]);
+  if (!sender) {
+    navigate("/");
+  }
   return (
     <div style={{ width: "100%" }}>
-
       <AddBeneficiaryModal />
       <SendersList />
       <SenderProfile />

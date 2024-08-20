@@ -19,6 +19,12 @@ const OrdersTable = ({ loading }) => {
       ),
     },
     {
+      title: "Sender Phone",
+      dataIndex: ["sender", "phone_number"],
+      key: "senderPhone",
+      render: (phone) => <Text>{phone}</Text>,
+    },
+    {
       title: "Receiver",
       dataIndex: ["receiver", "first_name"],
       key: "receiver",
@@ -70,7 +76,6 @@ const OrdersTable = ({ loading }) => {
       title: "Action",
       key: "action",
       render: (_, record) => (
-        console.log("record", record),
         <Space size="middle">
           <a href="#">Edit</a>
           <a href="#">Delete</a>

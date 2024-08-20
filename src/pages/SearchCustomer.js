@@ -10,6 +10,7 @@ import {
   getSendersApi,
   getSenders,
   setBeneficiary,
+  setSender,
 } from "../store/reducers/senders";
 
 import { setOrderCalculateDetail } from "../store/reducers/orders";
@@ -30,6 +31,7 @@ const CustomerSenderComponent = () => {
   };
 
   useEffect(() => {
+    dispatch(setSender(null));
     dispatch(setBeneficiary(null));
     dispatch(setOrderCalculateDetail(null));
     console.log("senders");
