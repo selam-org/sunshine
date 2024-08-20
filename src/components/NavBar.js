@@ -32,13 +32,6 @@ const NavBar = () => {
         </Link>
       ),
     },
-    {
-      key: "/option3",
-      icon: <ContainerOutlined />,
-      label: (
-        <span className="navbar-link">Option 3</span>
-      ),
-    },
   ];
 
   return (
@@ -82,7 +75,7 @@ const NavBar = () => {
               color: "#ffffff",
               margin: 0,
               fontWeight: "bold",
-              fontFamily: 'Bebas Neue, sans-serif',
+              fontFamily: "Bebas Neue, sans-serif",
               letterSpacing: "1px",
             }}
           >
