@@ -28,7 +28,7 @@ const OrdersPage = () => {
       Fee: order.commission || 0.0,
       Total: order.total_usd || 0.0,
       "Payment Type": "Cash",
-      "Total Pay Receiver": 0.0,
+      "Total Pay Receiver": order.total_birr || 0.0,
       Sender: `${order.sender.first_name} ${order.sender.last_name}`,
       "Sender Phone": order.sender.phone_number,
       "Sender Address": "13103 BRITTANY DR",

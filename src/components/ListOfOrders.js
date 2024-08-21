@@ -11,11 +11,18 @@ const OrdersTable = ({ loading }) => {
 
   const columns = [
     {
+      title: "No.",
+      key: "index",
+      render: (text, record, index) => <Text strong>{index + 1}</Text>,
+    },
+    {
       title: "Sender",
       dataIndex: ["sender", "first_name"],
       key: "sender",
       render: (text, record) => (
-        <Text strong>{`${record.sender.first_name} ${record.sender.last_name}`}</Text>
+        <Text
+          strong
+        >{`${record.sender.first_name} ${record.sender.last_name}`}</Text>
       ),
     },
     {

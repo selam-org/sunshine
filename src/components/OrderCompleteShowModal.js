@@ -5,10 +5,7 @@ import {
   HomeOutlined,
   PlusOutlined,
 } from "@ant-design/icons";
-import {
-  setSendersForNext,
-  setSender,
-} from "../store/reducers/senders";
+import { setSendersForNext, setSender } from "../store/reducers/senders";
 import { useSelector, useDispatch } from "react-redux";
 import {
   getCreatedOrder,
@@ -24,10 +21,6 @@ const OrderDetailModal = () => {
   const order = useSelector(getCreatedOrder);
   const dispatch = useDispatch();
   const isPrintOrderModalOpen = useSelector(getIsPrintOrderModalOpen);
-
-
-
-
 
   const goToHomePage = () => {
     dispatch(resetState());
