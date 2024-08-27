@@ -27,6 +27,17 @@ const { Text, Title } = Typography;
 const { Option } = Select;
 
 const OrderDetailModal = (props) => {
+  function isToday(timestamp) {
+    const date = new Date(timestamp);
+    const today = new Date();
+
+    return (
+      date.getFullYear() === today.getFullYear() &&
+      date.getMonth() === today.getMonth() &&
+      date.getDate() === today.getDate()
+    );
+  }
+
   const { order } = props;
   const showModal = useSelector((state) =>
     getDetailOrderModalVisible(state, order?.id)
@@ -54,12 +65,7 @@ const OrderDetailModal = (props) => {
       priority: orderPriority,
     };
 
-    dispatch(
-      updateOrderApiCall(
-        updatedOrder,
-        order?.id
-      )
-    );
+    dispatch(updateOrderApiCall(updatedOrder, order?.id));
     console.log(updatedOrder);
   };
 
@@ -290,9 +296,9 @@ const OrderDetailModal = (props) => {
                       onChange={handlePriorityChange}
                       style={{ width: "100%" }}
                     >
-                      <Option value="Regular">Regular</Option>
-                      <Option value="Urgent">Urgent</Option>
-                      <Option value="Top Urgent">Top Urgent</Option>
+                      <Option value="regular">Regular</Option>
+                      <Option value="urgent">Urgent</Option>
+                      <Option value="top_urgent">Top Urgent</Option>
                     </Select>
                   </Col>
                 </Row>
@@ -309,39 +315,43 @@ const OrderDetailModal = (props) => {
               justify="space-between"
             >
               <Col>
-                <Button
-                  type="link"
-                  loading={deleteOrderLoading}
-                  disabled={updateOrderLoading || deleteOrderLoading}
-                  danger
-                  icon={<DeleteOutlined />}
-                  onClick={() => {
-                    dispatch(deleteOrderApiCall(order.id));
-                  }}
-                  style={{
-                    fontSize: "16px",
-                    fontWeight: "bold",
-                  }}
-                >
-                  Delete Order
-                </Button>
+                {isToday(parseInt(order.created_at)) && (
+                  <Button
+                    type="link"
+                    loading={deleteOrderLoading}
+                    disabled={updateOrderLoading || deleteOrderLoading}
+                    danger
+                    icon={<DeleteOutlined />}
+                    onClick={() => {
+                      dispatch(deleteOrderApiCall(order.id));
+                    }}
+                    style={{
+                      fontSize: "16px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Delete Order
+                  </Button>
+                )}
               </Col>
               <Col>
-                <Button
-                  loading={updateOrderLoading}
-                  disabled={updateOrderLoading || deleteOrderLoading}
-                  type="primary"
-                  icon={<SaveOutlined />}
-                  onClick={handleUpdateBank}
-                  style={{
-                    backgroundColor: "#231e61",
-                    borderColor: "#231e61",
-                    fontSize: "16px",
-                    fontWeight: "bold",
-                  }}
-                >
-                  Update
-                </Button>
+                {isToday(parseInt(order.created_at)) && (
+                  <Button
+                    loading={updateOrderLoading}
+                    disabled={updateOrderLoading || deleteOrderLoading}
+                    type="primary"
+                    icon={<SaveOutlined />}
+                    onClick={handleUpdateBank}
+                    style={{
+                      backgroundColor: "#231e61",
+                      borderColor: "#231e61",
+                      fontSize: "16px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Update
+                  </Button>
+                )}
               </Col>
             </Row>
           </div>
