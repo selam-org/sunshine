@@ -11,6 +11,7 @@ import {
   getSender,
 } from "../store/reducers/senders";
 import { useNavigate } from "react-router-dom";
+
 const AddSenderModal = () => {
   const dispatch = useDispatch();
   const loading = useSelector(getAddSenderLoading);
@@ -18,7 +19,7 @@ const AddSenderModal = () => {
   const isModalOpen = useSelector(isAddSenderDialogOpen);
   const navigate = useNavigate();
   const [form] = Form.useForm(); // Antd Form instance
-  
+
   const showModal = () => {
     dispatch(setAddSenderDialog({ open: true }));
   };
@@ -26,24 +27,30 @@ const AddSenderModal = () => {
   const handleCancel = () => {
     dispatch(setAddSenderDialog({ open: false }));
   };
+
+  const capitalizeWords = (value) => {
+    return value.replace(/\b\w/g, (char) => char.toUpperCase());
+  };
+
   const sender = useSelector(getSender);
+
   const onFinish = (values) => {
     console.log("Form values", values);
-    dispatch(setSender(null))
+    dispatch(setSender(null));
     dispatch(addSenderApi(values));
     form.resetFields(); // Clear form fields after submission
-    // navigate("/order"); // Redirect to the senders page
-    
   };
 
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
+
   useEffect(() => {
     if (sender) {
       navigate("/order");
-    } 
+    }
   }, [sender]);
+
   return (
     <>
       <Button
@@ -96,6 +103,11 @@ const AddSenderModal = () => {
           >
             <Input
               placeholder="Enter first name"
+              onChange={(e) =>
+                form.setFieldsValue({
+                  first_name: capitalizeWords(e.target.value),
+                })
+              }
               style={{
                 borderRadius: "8px",
                 height: "40px",
@@ -116,6 +128,11 @@ const AddSenderModal = () => {
           >
             <Input
               placeholder="Enter last name"
+              onChange={(e) =>
+                form.setFieldsValue({
+                  last_name: capitalizeWords(e.target.value),
+                })
+              }
               style={{
                 borderRadius: "8px",
                 height: "40px",

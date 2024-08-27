@@ -9,6 +9,7 @@ import {
   getAddBeneficiaryLoading,
   getSender,
 } from "../store/reducers/senders";
+
 const { Title } = Typography;
 
 const AddBeneficiaryModal = (props) => {
@@ -18,25 +19,24 @@ const AddBeneficiaryModal = (props) => {
   const loading = useSelector(getAddBeneficiaryLoading);
   const error = useSelector(getAddBeneficiaryError);
   const sender = useSelector(getSender);
-  const [form] = Form.useForm(); // Antd Form instance
+  const [form] = Form.useForm();
 
   const handleCancel = () => {
     dispatch(setAddBeneficiaryModal({ open: false }));
   };
 
+  const capitalizeWords = (value) => {
+    return value.replace(/\b\w/g, (char) => char.toUpperCase());
+  };
+
   const onFinish = (values) => {
-    console.log("Form values", values);
-    console.log("Sender", sender);
     if (sender) {
       values.sender_id = sender.id;
     }
     if (!values.sender_id) {
-      console.log("Sender ID is missing");
       values.sender_id = id;
     }
     dispatch(addBeneficiaryApi(values));
-    console.log("Form values", values);
-    // handle form submission here
     form.resetFields(); // Clear form fields after submission
   };
 
@@ -65,8 +65,8 @@ const AddBeneficiaryModal = (props) => {
           name="add_beneficiary"
           onFinish={onFinish}
           layout="vertical"
-          style={{ gap: "16px" }}
           form={form}
+          initialValues={{ first_name: "", last_name: "", phone_number: "" }}
         >
           <Form.Item
             label="First Name"
@@ -80,6 +80,11 @@ const AddBeneficiaryModal = (props) => {
           >
             <Input
               placeholder="Enter first name"
+              onChange={(e) =>
+                form.setFieldsValue({
+                  first_name: capitalizeWords(e.target.value),
+                })
+              }
               style={{
                 borderRadius: "8px",
                 padding: "10px",
@@ -100,6 +105,11 @@ const AddBeneficiaryModal = (props) => {
           >
             <Input
               placeholder="Enter last name"
+              onChange={(e) =>
+                form.setFieldsValue({
+                  last_name: capitalizeWords(e.target.value),
+                })
+              }
               style={{
                 borderRadius: "8px",
                 padding: "10px",
@@ -113,11 +123,7 @@ const AddBeneficiaryModal = (props) => {
             name="phone_number"
             rules={[
               {
-                required: true,
-                message: "Please enter the phone number",
-              },
-              {
-                pattern: new RegExp(/^\d{10}$/),
+                pattern: /^\d{10}$/,
                 message:
                   "Please enter a valid 10-digit phone number (xxxxxxxxxx)",
               },
