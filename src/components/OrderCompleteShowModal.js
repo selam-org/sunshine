@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 
 const { Text, Title } = Typography;
 
-const OrderDetailModal = () => {
+const OrderCompleteModal = () => {
   const navigate = useNavigate();
   const order = useSelector(getCreatedOrder);
   const dispatch = useDispatch();
@@ -221,4 +221,4 @@ const OrderDetailModal = () => {
   );
 };
 
-export default OrderDetailModal;
+export default OrderCompleteModal;

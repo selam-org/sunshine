@@ -23,6 +23,7 @@ const sendersPersistConfig = {
     "addBeneficiaryLoading",
     "addBeneficiaryError",
     "beneficiary",
+
   ],
 };
 
@@ -45,6 +46,13 @@ const ordersPersistConfig = {
     "createOrderError",
     "createdOrder",
     "isCreateOrderModalOpen",
+
+    "detailOrderModalVisible",
+    "deleteOrderLoading",
+    "deleteOrderError",
+    "deleteOrderSuccess",
+    "updateOrderLoading",
+    "updateOrderError",
   ],
 };
 

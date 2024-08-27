@@ -3,6 +3,8 @@ import { Table, Tag, Space, Typography } from "antd";
 import moment from "moment";
 import { getOrders } from "../store/reducers/orders";
 import { useSelector } from "react-redux";
+import OrderDetailModal from "./OrderDetailModal";
+import order_list from "../style/components/order_list.css";
 
 const { Text } = Typography;
 
@@ -73,19 +75,19 @@ const OrdersTable = ({ loading }) => {
         </Tag>
       ),
     },
+
     {
       title: "Date",
-      dataIndex: "date",
+      dataIndex: "created_at",
       key: "date",
-      render: (date) => <Text>{moment(date).format("YYYY-MM-DD")}</Text>,
+      render: (date) => <Text>{moment(parseInt(date)).format("YYYY-MM-DD")}</Text>,
     },
     {
       title: "Action",
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          <a href="#">Edit</a>
-          <a href="#">Delete</a>
+          <OrderDetailModal order={record} />
         </Space>
       ),
     },
@@ -97,7 +99,11 @@ const OrdersTable = ({ loading }) => {
       dataSource={data}
       loading={loading}
       pagination={{ pageSize: 40 }}
-      rowClassName={() => "editable-row"}
+      // rowClassName={() => "editable-row"}
+      rowClassName={(record) =>
+
+        record.status === "void" ? "void-row" : "editable-row"
+      }
       style={{ width: "100%", backgroundColor: "#fff", borderRadius: "8px" }}
     />
   );

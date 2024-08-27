@@ -1,13 +1,14 @@
 import * as actions from "../api";
 import axios from "axios";
 function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 const apiCall =
   ({ dispatch }) =>
   (next) =>
   async (action) => {
     if (action.type !== actions.apiCallBegan.type) return next(action);
+
     const {
       url,
       onStart,
@@ -21,18 +22,21 @@ const apiCall =
     } = action.payload;
     if (onStart) dispatch({ type: onStart });
     next(action);
+    const baseURL = process.env.REACT_APP_API_BASE_URL;
+    console.log("baseURL", baseURL);
+
     try {
-      await sleep(2000);  
+      await sleep(2000);
       const response = await axios.request({
-        // baseURL: "http://10.0.0.223:8000",
-        baseURL: "https://sunsine-backend.onrender.com",
+        // baseURL: "https://sunsine-backend-staging.onrender.com",
+        baseURL,
         url,
         method,
         data,
         params,
         headers,
       });
-      
+
       dispatch(actions.apiCallSuccess(response.data));
       if (onSuccess) dispatch({ type: onSuccess, payload: response.data });
     } catch (error) {

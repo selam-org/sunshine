@@ -53,8 +53,8 @@ const OrdersPage = () => {
       "Payee Agency": "Pa001 ehtiopia payee partner",
       "Point of Payment": "ehtiopia payee partner",
       "Mode Pay Receiver": "BANK DEPOSIT",
-      Bank: order.receiver.default_bank.bank,
-      "Bank Account": order.receiver.default_bank.account,
+      Bank: order.bank.bank,
+      "Bank Account": order.bank.account,
       "Id Sender": "208495",
       "Notes Receiver": "No additional notes",
       Company: "Selam Express",
@@ -68,7 +68,7 @@ const OrdersPage = () => {
       "Id Country National": "United States",
       "Sender Sex": "M",
       Citizenship: "United States",
-      "Send Date": moment().format("MM/DD/YYYY h:mm:ss A"),
+      "Send Date":moment(parseInt(order.created_at)).format("MM/DD/YYYY h:mm:ss A"),
     }));
 
     // Create a new worksheet

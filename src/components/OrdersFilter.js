@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Form, Input, Button, DatePicker, Select } from "antd";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  getOrdersLoading,
-  getOrdersApiCall,
-} from "../store/reducers/orders";
-
+import { getOrdersLoading, getOrdersApiCall } from "../store/reducers/orders";
+import moment from "moment";
 const { RangePicker } = DatePicker;
 const { Option } = Select;
 
@@ -62,12 +59,10 @@ const OrderFilter = () => {
       layout="inline"
       onValuesChange={handleValuesChange}
       onFinish={handleSubmit}
-      initialValues={
-        {
-          // dateRange: [moment(), moment()],
-          status:""
-        }
-      }
+      initialValues={{
+        // dateRange: [, end_date],
+        status: "",
+      }}
       style={{
         display: "flex",
         flexWrap: "wrap",
@@ -147,6 +142,8 @@ const OrderFilter = () => {
 
       <Form.Item
         name="dateRange"
+        defaultValue={[moment(), moment()]}
+
         rules={[
           {
             type: "array",
@@ -157,6 +154,7 @@ const OrderFilter = () => {
       >
         <RangePicker
           size="small"
+          // defaultChecked={[moment(), moment()]}
           style={{
             borderRadius: "20px",
             width: "260px",
@@ -183,7 +181,6 @@ const OrderFilter = () => {
           <Option value="">Not Void</Option>
 
           <Option value="void">Void</Option>
-          
         </Select>
       </Form.Item>
 
