@@ -13,6 +13,7 @@ import {
   resetState,
 } from "../store/reducers/orders";
 import { useNavigate } from "react-router-dom";
+import Receipt from "./Receipt";
 
 const { Text, Title } = Typography;
 
@@ -210,9 +211,9 @@ const OrderCompleteModal = () => {
                   Next Order
                 </Button>
               </Col>
-              {/* <Col style={{ textAlign: "center" }}>
+              <Col style={{ textAlign: "center" }}>
                 <Receipt order={order} />
-              </Col> */}
+              </Col>
             </Row>
           </div>
         )}
