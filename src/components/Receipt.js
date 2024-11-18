@@ -4,7 +4,9 @@ import { Col, Row, Button } from "antd";
 import "../style/components/receipt.css";
 import { useReactToPrint } from "react-to-print";
 import { PrinterOutlined } from "@ant-design/icons";
-const Receipt = () => {
+const Receipt = (props) => {
+  const { order } = props;
+  console.log(order, "order");
   const componentRef = useRef();
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
@@ -28,9 +30,9 @@ const Receipt = () => {
               pageBreakAfter: "always",
             }}
           >
-            <ReceiptContent receiptTo="Customer" />
+            <ReceiptContent order_detail={order} receiptTo="Customer" />
           </div>
-          <ReceiptContent receiptTo="Agent" />
+          <ReceiptContent order_detail={order} receiptTo="Agent" />
         </div>
       </div>
       <Button
@@ -48,40 +50,79 @@ const Receipt = () => {
     </>
   );
 };
-const ReceiptContent = () => {
+const ReceiptContent = (props) => {
+  const { order_detail } = props;
+  function formatTimestamp(timestamp) {
+    const date = new Date(Number(timestamp));
+
+    let month = date.getMonth() + 1; // Months are zero-based
+    let day = date.getDate();
+    const year = date.getFullYear();
+
+    let hours = date.getHours();
+    const minutes = date.getMinutes();
+    const seconds = date.getSeconds();
+
+    const ampm = hours >= 12 ? "PM" : "AM";
+    hours = hours % 12 || 12; // Convert to 12-hour format
+
+    // Add leading zeros to single-digit numbers
+    month = month < 10 ? "0" + month : month;
+    day = day < 10 ? "0" + day : day;
+    const hString = hours < 10 ? "0" + hours : hours;
+    const mString = minutes < 10 ? "0" + minutes : minutes;
+    const sString = seconds < 10 ? "0" + seconds : seconds;
+
+    return `${month}/${day}/${year} ${hString}:${mString}:${sString} ${ampm}`;
+  }
+
+  function generateInvoiceNumber() {
+    const prefix = "SE001-";
+    const randomNumber = Math.floor(100000 + Math.random() * 900000); // Generates a 6-digit number between 100000 and 999999
+    return prefix + randomNumber;
+  }
+
+  function generateConfirmationNumber() {
+    let result = "";
+    for (let i = 0; i < 12; i++) {
+      const randomDigit = Math.floor(Math.random() * 10); // Generates a digit between 0 and 9
+      result += randomDigit.toString();
+    }
+    return result;
+  }
   const sender_obj = {
     id: "123456789",
-    sender_first_name: "John",
-    sender_last_name: "Doe",
-    sender_phone: "+1 555 555 5555",
-    sender_address: "123 Main Street, Silver Spring, MD 20910",
-    sender_zip: "20910",
+    sender_first_name: order_detail.sender.first_name,
+    sender_last_name: order_detail.sender.last_name,
+    sender_phone: order_detail.sender.phone_number,
+    sender_address: " ",
+    sender_zip: "",
   };
 
   const receiver_obj = {
     id: "987654321",
-    receiver_first_name: "Jane",
-    receiver_last_name: "Smith",
-    receiver_phone: "+251 912 345 678",
-    receiver_address: "456 Elm Street, Addis Ababa, Ethiopia",
+    receiver_first_name: order_detail.receiver.first_name,
+    receiver_last_name: order_detail.receiver.last_name,
+    receiver_phone: order_detail.receiver.phone_number,
+    receiver_address: "ADDIS ABABA, ETHIOPIA",
   };
 
   const payment_info_obj = {
-    bank_name: "Commercial Bank of Ethiopia",
-    branch: "Addis Ababa Branch",
-    bank_account: "1122334455",
+    bank_name: order_detail.bank.bank,
+    branch: "/",
+    bank_account: order_detail.bank.account,
     account_type: "Savings",
     mode_pay_receiver: "Bank Deposit",
   };
 
   const order = {
-    date: "08/17/2024",
-    invoice_number: "INV-2024-0001",
-    confirmation_no: "CONF-2024-123456",
-    net_amount_receiver: "1000.00",
-    rate_change_receiver: "54.50",
-    fee: "10.00",
-    total_pay_receiver: "54500.00",
+    date: formatTimestamp(order_detail.created_at), // order_detail.created_at,
+    invoice_number: generateInvoiceNumber(),
+    confirmation_no: generateConfirmationNumber(),
+    net_amount_receiver: order_detail.total_usd.toFixed(2),
+    rate_change_receiver: order_detail.rate,
+    fee: order_detail.commission,
+    total_pay_receiver: order_detail.total_birr.toFixed(2),
   };
 
   const receiptTo = "Customer";
