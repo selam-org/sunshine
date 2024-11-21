@@ -356,7 +356,7 @@ const ReceiptContent = (props) => {
         <div className="row">
           <p className="td td-1 pair-col-bold">Total/ :</p>
           <p className="td td-2 pair-col">
-            USD {parseFloat(order.net_amount_receiver) + parseFloat(order.fee)}
+            USD {parseFloat(order.net_amount_receiver)}
           </p>
         </div>
       </div>
