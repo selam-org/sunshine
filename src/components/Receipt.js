@@ -327,7 +327,9 @@ const ReceiptContent = (props) => {
       <div className="receipt-table">
         <div className="row">
           <p className="td td-1 pair-col-bold">Amount/ :</p>
-          <p className="td td-2 pair-col">USD {order.net_amount_receiver}</p>
+          <p className="td td-2 pair-col">
+            USD {order.net_amount_receiver - order.fee}
+          </p>
         </div>
         <div className="row">
           <p className="td td-1 pair-col">Rate/ :</p>
