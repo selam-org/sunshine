@@ -126,6 +126,9 @@ const ReceiptContent = (props) => {
   };
 
   const receiptTo = "Customer";
+  function generateRandom9DigitNumber() {
+    return Math.floor(100000000 + Math.random() * 900000000);
+  }
 
   return (
     <div
@@ -216,7 +219,7 @@ const ReceiptContent = (props) => {
             <p>Account #/ :</p>
           </Col>
           <Col span={14} className="pair-col-bold">
-            <p>{sender_obj.id}</p>
+            <p>{generateRandom9DigitNumber()}</p>
           </Col>
         </Row>
         <Row className="key-pair-row" align={"top"}>
@@ -264,7 +267,7 @@ const ReceiptContent = (props) => {
             <p>Account #/ :</p>
           </Col>
           <Col span={14} className="pair-col-bold">
-            <p>{receiver_obj.id}</p>
+            <p>{generateRandom9DigitNumber()}</p>
           </Col>
         </Row>
         <Row className="key-pair-row" align={"top"}>
