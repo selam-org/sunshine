@@ -22,6 +22,7 @@ import {
   getDeleteOrderLoading,
   getUpdateOrderLoading,
 } from "../store/reducers/orders";
+import Receipt from "./Receipt";
 
 const { Text, Title } = Typography;
 const { Option } = Select;
@@ -314,7 +315,7 @@ const OrderDetailModal = (props) => {
               }}
               justify="space-between"
             >
-              <Col>
+              <Col span={12}>
                 {isToday(parseInt(order.created_at)) && (
                   <Button
                     type="link"
@@ -333,6 +334,9 @@ const OrderDetailModal = (props) => {
                     Delete Order
                   </Button>
                 )}
+              </Col>
+              <Col>
+                <Receipt order={order} />
               </Col>
               <Col>
                 {isToday(parseInt(order.created_at)) && (
