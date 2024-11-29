@@ -162,12 +162,14 @@ const ReceiptContent = (props) => {
         />
       </div>
       <HorizontalLine />
-      <p className="receipt-agency-title">Agency Saleemexpress - SE001</p>
-      <p className="agency-info">8205 fenton street</p>
-      <p className="agency-info agency-location">
-        SILVER SPRING Maryland 23233 United States
-      </p>
-      <div>
+      <div className="agency-info-container">
+        <p className="receipt-agency-title">Agency Saleemexpress - SE001</p>
+        <p className="agency-info">8205 fenton street</p>
+        <p className="agency-info agency-location">
+          SILVER SPRING Maryland 23233 United States
+        </p>
+      </div>
+      <div className="agency-row-container">
         <div className="agency-row">
           <p className="agency-info license">agent License/ :</p>
           <p className="agency-info">ag001</p>
@@ -434,7 +436,25 @@ const ReceiptContent = (props) => {
           Money will be sent to the wrong account and the company is not
           responsible. The company makes money from currency exchange, when you
           choosing a money transmitter carefully compare both transfer fee and
-          exchange rates. The transfer may take three to five days.
+          exchange rates. The transfer may take three to five days. Exchange
+          Charges: If a sending customer requests payment to a beneficiary in
+          non-U.S currency. Selam Express will also retain as revenue any
+          difference between the retail currency exchange rate charged to the
+          sending customer and the wholesale currency exchange rate by SELAM
+          EXPRESS. LIMITATION OF LIABILITY: SELAM EXPRESS's liability is limited
+          to the U.S dollar amount shown on the face of this receipt including
+          service charges places by SELAM EXPRESS. SELAM EXPRESS shall not be
+          liable for any indirect or consequential damages resulting from late
+          delivery of your payment order, messages or refunds. No person is
+          authorized to alter or waive the terms of this agreement on SELAM
+          EXPRESS's behalf. PRIVACY: SELAM EXPRESS doe snot disclose any
+          nonpublic personal or financial information about its customers to
+          third parties, except as permitted by law and as necessary in
+          processing and conducting the transaction you have requested and
+          authorized. WARNING: Wiring money is just like sending cash. you can't
+          get it back once it is gone. So, don't wire money to a stranger or to
+          someone you haven't met in person. If you believe you were involved in
+          a scamp, please contact us at (240)531-2646.
           <span className="receip-info-capital">
             CONSUMER FRAUD ALERT:-NEVER SEND MONEY TO SOMEONE YOU DON`T REALLY
             KNOW.
@@ -442,10 +462,6 @@ const ReceiptContent = (props) => {
         </p>
         <p className="red-info">
           BEWARE - Never send money to someone you don't really know!/ :
-        </p>
-        <p className="sign-info">
-          By signing this form, you agree to the terms and conditions of the
-          service./ :
         </p>
         <HorizontalLine />
         <Row className="key-pair-title">
