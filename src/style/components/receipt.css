@@ -219,18 +219,3 @@ p {
   margin-bottom: 1180px;
   margin-top: 40px;
 }
-
-@media print {
-  html,
-  body {
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
-
-  body {
-    image-rendering: -webkit-optimize-contrast;
-    font-smooth: always;
-    -webkit-font-smoothing: antialiased;
-    zoom: 2;
-  }
-}
