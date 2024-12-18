@@ -105,21 +105,6 @@ const slice = createSlice({
       orders.detailOrderModalVisible[action.payload.id] = action.payload.open;
     },
 
-    deleteOrderStart: (orders, action) => {
-      orders.deleteOrderLoading = true;
-      orders.deleteOrderError = null;
-    },
-    deleteOrderFailed: (orders, action) => {
-      orders.deleteOrderLoading = false;
-      orders.deleteOrderError = action.payload;
-    },
-    deleteOrderSuccess: (orders, action) => {
-      orders.deleteOrderLoading = false;
-      orders.detailOrderModalVisible[action.payload.id] = false;
-      orders.orders = orders.orders.filter(
-        (order) => order.id !== action.payload.id
-      );
-    },
     setDeleteOrderError: (orders, action) => {
       orders.deleteOrderError = action.payload;
     },
@@ -141,19 +126,6 @@ const slice = createSlice({
     updateOrderFailed: (orders, action) => {
       orders.updateOrderLoading = false;
       orders.updateOrderError = action.payload;
-    },
-    fetchExchangeRateRangesStart: (orders) => {
-      orders.fetchExchangeRateRangesLoading = true;
-      orders.fetchExchangeRateRangesError = null;
-      orders.exchangeRateRanges = null;
-    },
-    fetchExchangeRateRangesSuccess: (orders, action) => {
-      orders.fetchExchangeRateRangesLoading = false;
-      orders.exchangeRateRanges = action.payload;
-    },
-    fetchExchangeRateRangesFailed: (orders, action) => {
-      orders.fetchExchangeRateRangesLoading = false;
-      orders.fetchExchangeRateRangesError = action.payload;
     },
   },
 });
@@ -180,9 +152,6 @@ export const {
   calculateStart,
   calculateSuccess,
   calculateFailed,
-  fetchExchangeRateRangesStart,
-  fetchExchangeRateRangesSuccess,
-  fetchExchangeRateRangesFailed,
 } = slice.actions;
 
 export const deleteOrderApiCall = (id) => (dispatch, getState) => {
@@ -247,19 +216,6 @@ export const createOrderApiCall = (data) => (dispatch, getState) => {
       onFailed: createOrderFailed.type,
       data,
       method: "post",
-    })
-  );
-};
-
-// API call for fetching exchange rate ranges
-export const fetchExchangeRateRangesApiCall = () => (dispatch) => {
-  dispatch(
-    action.apiCallBegan({
-      url: "rate/ranges",
-      onStart: fetchExchangeRateRangesStart.type,
-      onSuccess: fetchExchangeRateRangesSuccess.type,
-      onFailed: fetchExchangeRateRangesFailed.type,
-      method: "get",
     })
   );
 };
@@ -348,19 +304,4 @@ export const getUpdateOrderLoading = createSelector(
 export const getUpdateOrderError = createSelector(
   (state) => state.entities.orders.updateOrderError,
   (updateOrderError) => updateOrderError
-);
-
-export const getExchangeRateRanges = createSelector(
-  (state) => state.entities.orders.exchangeRateRanges,
-  (ranges) => ranges
-);
-
-export const getFetchExchangeRateRangesLoading = createSelector(
-  (state) => state.entities.orders.fetchExchangeRateRangesLoading,
-  (loading) => loading
-);
-
-export const getFetchExchangeRateRangesError = createSelector(
-  (state) => state.entities.orders.fetchExchangeRateRangesError,
-  (error) => error
 );

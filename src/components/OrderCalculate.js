@@ -6,9 +6,6 @@ import {
   getCalculateDetail,
   calculateOrderApiCall,
   getCalculateLoading,
-  getExchangeRateRanges,
-  fetchExchangeRateRangesApiCall,
-  getFetchExchangeRateRangesLoading,
 } from "../store/reducers/orders";
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -16,34 +13,19 @@ const { Option } = Select;
 const CurrencyConverter = () => {
   const [sendAmount, setSendAmount] = useState(0);
   const [receiveAmount, setReceiveAmount] = useState(0);
-  const [exchangeRate, setExchangeRate] = useState("134"); // Example exchange rate
+  const [exchangeRate] = useState(134.0); // Example exchange rate
   const [charge, setCharge] = useState(0);
   const [grandTotal, setGrandTotal] = useState(0);
   const dispatch = useDispatch();
   const loading = useSelector(getCalculateLoading);
   const calculateDetail = useSelector(getCalculateDetail);
-  const exchangeRateRanges = useSelector(getExchangeRateRanges);
-  const fetchExchangeRateRangesLoading = useSelector(
-    getFetchExchangeRateRangesLoading
-  );
-
-  useEffect(() => {
-    // Fetch ranges on component mount
-    dispatch(fetchExchangeRateRangesApiCall());
-  }, [dispatch]);
-
   useEffect(() => {
     if (calculateDetail) {
       setValues(calculateDetail);
     }
   }, [calculateDetail]);
   const calculateFromSendAmount = () => {
-    dispatch(
-      calculateOrderApiCall({
-        sent_usd: sendAmount,
-        rate: exchangeRate,
-      })
-    );
+    dispatch(calculateOrderApiCall({ sent_usd: sendAmount }));
     console.log("calculatedReceiveAmount", calculateDetail);
   };
   const setValues = (value) => {
@@ -51,65 +33,15 @@ const CurrencyConverter = () => {
     setCharge(value.commission.toFixed(2));
     setGrandTotal(value.total_usd.toFixed(2));
     setSendAmount(value.sent_usd.toFixed(2));
-    setExchangeRate(value.rate.toFixed(2));
   };
   const calculateFromReceiveAmount = () => {
-    dispatch(
-      calculateOrderApiCall({
-        total_birr: receiveAmount,
-        rate: exchangeRate,
-      })
-    );
+    dispatch(calculateOrderApiCall({ total_birr: receiveAmount }));
     console.log("calculatedReceiveAmount", calculateDetail);
   };
 
   const calculateFromGrandTotal = () => {
-    dispatch(
-      calculateOrderApiCall({
-        total_usd: grandTotal,
-        rate: exchangeRate,
-      })
-    );
+    dispatch(calculateOrderApiCall({ total_usd: grandTotal }));
     console.log("calculatedReceiveAmount", calculateDetail);
-  };
-
-  const handleRateChange = () => {
-    const TOLERANCE = 1e-9;
-    const rate = parseFloat(exchangeRate);
-
-    if (exchangeRateRanges) {
-      console.log(sendAmount);
-      const isValidRate = exchangeRateRanges.some((range) => {
-        const isAmountValid =
-          parseFloat(sendAmount) >= range.amount_range.min - TOLERANCE &&
-          parseFloat(sendAmount) <=
-            (range.amount_range.max ?? Infinity) + TOLERANCE;
-        const isRateValid =
-          rate >= range.rate_range.min - TOLERANCE &&
-          rate <= range.rate_range.max + TOLERANCE;
-
-        return isAmountValid && isRateValid;
-      });
-      if (isValidRate) {
-        setExchangeRate(rate);
-      } else {
-        // If invalid, fallback to the default rate for the range
-        const defaultRange = exchangeRateRanges.find(
-          (range) =>
-            parseFloat(sendAmount) >= range.amount_range.min - TOLERANCE &&
-            parseFloat(sendAmount) <=
-              (range.amount_range.max ?? Infinity) + TOLERANCE
-        );
-        if (defaultRange) {
-          const defaultRate = defaultRange.rate_range.min; // Use min rate as fallback
-          setExchangeRate(defaultRate);
-        } else {
-          setExchangeRate("134"); // Clear if no valid range exists
-        }
-      }
-
-      calculateFromSendAmount();
-    }
   };
 
   return (
@@ -164,17 +96,13 @@ const CurrencyConverter = () => {
       <Divider style={{ margin: "12px 0" }} />
 
       <Row gutter={[16, 16]} align="middle">
-        <Col span={8}>
-          <Text strong>Exchange Rate</Text>
-          <Input
-            disabled={fetchExchangeRateRangesLoading}
-            value={exchangeRate}
-            onChange={(e) => setExchangeRate(e.target.value)}
-            onBlur={handleRateChange}
-            placeholder={exchangeRate}
-            style={{ marginTop: "8px", borderRadius: "8px" }}
-            suffix="ETB"
-          />
+        <Col span={12}>
+          <Title
+            level={5}
+            style={{ color: "#FF6600", margin: 0, textAlign: "left" }}
+          >
+            Exchange Rate: {calculateDetail && calculateDetail.rate.toFixed(4)}
+          </Title>
         </Col>
         <Col span={12} style={{ textAlign: "right" }}>
           {loading && (

@@ -184,15 +184,7 @@ const AddSenderModal = () => {
               }}
             />
           </Form.Item>
-          <Form.Item
-            label="Address"
-            name="address"
-            rules={[
-              {
-                required: true,
-              },
-            ]}
-          >
+          <Form.Item label="Address" required>
             <Input.Group style={{ marginBottom: "2%" }}>
               <Form.Item
                 name="city"
