@@ -53,7 +53,6 @@ const OrderDetailModal = (props) => {
         receiver_id: beneficiary.id,
         sender_id: sender.id,
         sent_usd: calculateDetail.sent_usd,
-        rate: calculateDetail.rate,
         receiver_bank_id: beneficiary.default_bank.id,
       })
     );

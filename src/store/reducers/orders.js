@@ -95,7 +95,10 @@ const slice = createSlice({
     },
     deleteOrderSuccess: (orders, action) => {
       orders.deleteOrderLoading = false;
-      orders.deleteOrderError = null;
+      orders.detailOrderModalVisible[action.payload.id] = false;
+      orders.orders = orders.orders.filter(
+        (order) => order.id !== action.payload.id
+      );
     },
     deleteOrderFailed: (orders, action) => {
       orders.deleteOrderLoading = false;
