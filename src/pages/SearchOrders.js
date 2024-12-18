@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card, Typography, Tabs, Button } from "antd";
 import OrderFilter from "../components/OrdersFilter";
 import ListOfOrders from "../components/ListOfOrders";
 import moment from "moment";
 import SummaryReport from "../components/SummaryReport";
 
-import * as XLSX from "xlsx";
+import * as XLSX from "sheetjs-style";
 import { getOrders } from "../store/reducers/orders";
 import { useSelector } from "react-redux";
 
@@ -14,13 +14,20 @@ const { TabPane } = Tabs;
 
 const OrdersPage = () => {
   const orders = useSelector(getOrders);
+  const [filterValues, setFilterValues] = useState({});
+
+  const handleFilterSubmit = (values) => {
+    // Update state in the parent with formattedValues from the child
+    setFilterValues(values);
+  };
+
   const handleExport = () => {
     // Format the orders data for export
     const formattedData = orders.map((order) => ({
       Invoice: "SE001-3",
       "Confirmation No": "524475046535",
       Agency: "SE001",
-      Date: moment().format("MM/DD/YYYY h:mm:ss A"),
+      Date: moment(parseInt(order.created_at)).format("MM/DD/YYYY h:mm:ss A"),
       "Send Currency": "Dollar",
       "Received Currency": "Ethiopian Birr",
       "Rate Change Receiver": order.rate || 0.0,
@@ -68,18 +75,68 @@ const OrdersPage = () => {
       "Id Country National": "United States",
       "Sender Sex": "M",
       Citizenship: "United States",
-      "Send Date":moment(parseInt(order.created_at)).format("MM/DD/YYYY h:mm:ss A"),
+      "Send Date": moment(parseInt(order.created_at)).format(
+        "MM/DD/YYYY h:mm:ss A"
+      ),
     }));
 
     // Create a new worksheet
     const ws = XLSX.utils.json_to_sheet(formattedData);
 
+    // Iterate through the data and apply styles based on order.status
+    ws["!rows"] = []; // Initialize the !rows array
+    formattedData.forEach((row, rowIndex) => {
+      if (row?.Status === "void") {
+        ws["!rows"][rowIndex] = { hpx: 15 };
+
+        const range = ws["!ref"]
+          ? XLSX.utils.decode_range(ws["!ref"])
+          : {
+              s: { c: 0, r: 0 },
+              e: {
+                c:
+                  formattedData.length > 0 && Object.keys(formattedData[0])
+                    ? Object.keys(formattedData[0]).length - 1
+                    : 0,
+                r: formattedData.length > 0 ? formattedData.length - 1 : 0,
+              },
+            };
+
+        const startCol = range.s.c;
+        const endCol = range.e.c;
+
+        for (let col = startCol; col <= endCol; col++) {
+          const cellAddress = XLSX.utils.encode_col(col) + (rowIndex + 2);
+          console.log(cellAddress);
+
+          if (ws[cellAddress] && typeof ws[cellAddress] === "object") {
+            ws[cellAddress].s = {
+              fill: { fgColor: { rgb: "FF0000" } },
+            };
+          }
+        }
+      }
+    });
+
     // Create a new workbook and append the worksheet
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Orders");
+    let fileName;
 
     // Generate Excel file and trigger download
-    const fileName = `Order_${moment().format("YYYYMMDD_HHmmss")}.xlsx`;
+    if (
+      filterValues &&
+      filterValues["start_date"] &&
+      filterValues["end_date"]
+    ) {
+      fileName = `Orders Report From ${moment(
+        filterValues["start_date"]
+      ).format("MMM D YYYY")} To ${moment(filterValues["end_date"]).format(
+        "MMM D YYYY"
+      )}.xlsx`;
+    } else {
+      fileName = `Orders Report All Time.xlsx`;
+    }
     XLSX.writeFile(wb, fileName);
   };
 
@@ -100,7 +157,7 @@ const OrdersPage = () => {
           backgroundColor: "#ffffff",
         }}
       >
-        <OrderFilter />
+        <OrderFilter onSubmit={handleFilterSubmit} />
         <Tabs defaultActiveKey="1">
           <TabPane style={{ marginTop: "15px" }} tab=" Summary Report" key="1">
             <SummaryReport />

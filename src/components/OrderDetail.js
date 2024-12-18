@@ -53,6 +53,7 @@ const OrderDetailModal = (props) => {
         receiver_id: beneficiary.id,
         sender_id: sender.id,
         sent_usd: calculateDetail.sent_usd,
+        rate: calculateDetail.rate,
         receiver_bank_id: beneficiary.default_bank.id,
       })
     );
@@ -219,7 +220,7 @@ const OrderDetailModal = (props) => {
               <Text>Exchange Rate:</Text>
               <div>
                 <Text strong>
-                  {calculateDetail && calculateDetail.rate.toFixed(4)} ETB/USD
+                  {calculateDetail && calculateDetail.rate.toFixed(2)} ETB/USD
                 </Text>
               </div>
             </Col>

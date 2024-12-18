@@ -142,6 +142,19 @@ const slice = createSlice({
       orders.updateOrderLoading = false;
       orders.updateOrderError = action.payload;
     },
+    fetchExchangeRateRangesStart: (orders) => {
+      orders.fetchExchangeRateRangesLoading = true;
+      orders.fetchExchangeRateRangesError = null;
+      orders.exchangeRateRanges = null;
+    },
+    fetchExchangeRateRangesSuccess: (orders, action) => {
+      orders.fetchExchangeRateRangesLoading = false;
+      orders.exchangeRateRanges = action.payload;
+    },
+    fetchExchangeRateRangesFailed: (orders, action) => {
+      orders.fetchExchangeRateRangesLoading = false;
+      orders.fetchExchangeRateRangesError = action.payload;
+    },
   },
 });
 
@@ -167,6 +180,9 @@ export const {
   calculateStart,
   calculateSuccess,
   calculateFailed,
+  fetchExchangeRateRangesStart,
+  fetchExchangeRateRangesSuccess,
+  fetchExchangeRateRangesFailed,
 } = slice.actions;
 
 export const deleteOrderApiCall = (id) => (dispatch, getState) => {
@@ -234,6 +250,20 @@ export const createOrderApiCall = (data) => (dispatch, getState) => {
     })
   );
 };
+
+// API call for fetching exchange rate ranges
+export const fetchExchangeRateRangesApiCall = () => (dispatch) => {
+  dispatch(
+    action.apiCallBegan({
+      url: "rate/ranges",
+      onStart: fetchExchangeRateRangesStart.type,
+      onSuccess: fetchExchangeRateRangesSuccess.type,
+      onFailed: fetchExchangeRateRangesFailed.type,
+      method: "get",
+    })
+  );
+};
+
 export default slice.reducer;
 
 export const getCalculateDetail = createSelector(
@@ -318,4 +348,19 @@ export const getUpdateOrderLoading = createSelector(
 export const getUpdateOrderError = createSelector(
   (state) => state.entities.orders.updateOrderError,
   (updateOrderError) => updateOrderError
+);
+
+export const getExchangeRateRanges = createSelector(
+  (state) => state.entities.orders.exchangeRateRanges,
+  (ranges) => ranges
+);
+
+export const getFetchExchangeRateRangesLoading = createSelector(
+  (state) => state.entities.orders.fetchExchangeRateRangesLoading,
+  (loading) => loading
+);
+
+export const getFetchExchangeRateRangesError = createSelector(
+  (state) => state.entities.orders.fetchExchangeRateRangesError,
+  (error) => error
 );

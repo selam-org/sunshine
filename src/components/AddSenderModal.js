@@ -34,10 +34,28 @@ const AddSenderModal = () => {
 
   const sender = useSelector(getSender);
 
+  const nestAddressValues = (values) => {
+    const new_values = JSON.parse(JSON.stringify(values));
+    const addressFields = ["street", "city", "state", "zip_code"];
+
+    // Extract address fields from the flat structure
+    const address = {};
+    addressFields.forEach((field) => {
+      if (new_values[field]) {
+        address[field] = new_values[field];
+        delete new_values[field]; // Remove from the root
+      }
+    });
+
+    // Add the reshaped address to the values
+    new_values.address = address;
+    return new_values;
+  };
+
   const onFinish = (values) => {
     console.log("Form values", values);
     dispatch(setSender(null));
-    dispatch(addSenderApi(values));
+    dispatch(addSenderApi(nestAddressValues(values)));
     form.resetFields(); // Clear form fields after submission
   };
 
@@ -165,6 +183,119 @@ const AddSenderModal = () => {
                 borderColor: "#d9d9d9",
               }}
             />
+          </Form.Item>
+          <Form.Item
+            label="Address"
+            name="address"
+            rules={[
+              {
+                required: true,
+              },
+            ]}
+          >
+            <Input.Group style={{ marginBottom: "2%" }}>
+              <Form.Item
+                name="city"
+                noStyle
+                rules={[
+                  {
+                    required: true,
+                    message: "City is required",
+                  },
+                  {
+                    pattern: /^[a-zA-Z\s]+$/,
+                    message: "City must only contain letters",
+                  },
+                ]}
+              >
+                <Input
+                  style={{
+                    width: "39%",
+                    marginRight: "1%",
+                    borderRadius: "8px",
+                    height: "40px",
+                    borderColor: "#d9d9d9",
+                  }}
+                  placeholder="City"
+                />
+              </Form.Item>
+              <Form.Item
+                name="state"
+                noStyle
+                rules={[
+                  {
+                    required: true,
+                    message: "State is required",
+                  },
+                  {
+                    pattern: /^[a-zA-Z\s]+$/,
+                    message: "State must only contain letters",
+                  },
+                ]}
+              >
+                <Input
+                  style={{
+                    width: "39%",
+                    marginRight: "1%",
+                    borderRadius: "8px",
+                    height: "40px",
+                    borderColor: "#d9d9d9",
+                  }}
+                  placeholder="State"
+                />
+              </Form.Item>
+              <Form.Item
+                name="zip_code"
+                noStyle
+                rules={[
+                  {
+                    required: true,
+                    message: "ZIP code is required",
+                  },
+                  {
+                    pattern: /^\d{5}(-\d{4})?$/,
+                    message:
+                      "ZIP code must be valid (e.g., 12345 or 12345-6789)",
+                  },
+                ]}
+              >
+                <Input
+                  style={{
+                    width: "20%",
+                    borderRadius: "8px",
+                    height: "40px",
+                    borderColor: "#d9d9d9",
+                  }}
+                  placeholder="ZIP Code"
+                  maxLength={6}
+                />
+              </Form.Item>
+            </Input.Group>
+            <Form.Item
+              name="street"
+              label="Street Address"
+              rules={[
+                {
+                  required: true,
+                  message: "Street address is required",
+                },
+                {
+                  pattern: /^[a-zA-Z0-9\s,.'-]{3,}$/,
+                  message: "Street address must be valid",
+                },
+              ]}
+            >
+              <Input
+                style={{
+                  width: "100%",
+                  marginBottom: "1%",
+                  borderRadius: "8px",
+                  height: "40px",
+                  borderColor: "#d9d9d9",
+                }}
+                placeholder="Enter Street Address"
+              />
+            </Form.Item>
           </Form.Item>
 
           <Form.Item>
