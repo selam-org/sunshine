@@ -80,7 +80,9 @@ const OrdersTable = ({ loading }) => {
       title: "Date",
       dataIndex: "created_at",
       key: "date",
-      render: (date) => <Text>{moment(parseInt(date)).format("YYYY-MM-DD")}</Text>,
+      render: (date) => (
+        <Text>{moment(parseInt(date)).format("YYYY-MM-DD hh:mm A")}</Text>
+      ),
     },
     {
       title: "Action",

@@ -29,25 +29,27 @@ function Order() {
   }
   return (
     <div style={{ width: "100%" }}>
-    {sender ? (
-      <>
-        <AddBeneficiaryModal />
-        <SendersList />
-        <SenderProfile />
-        <BeneficiaryDetailCard />
-        <div
-          style={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "space-between",
-            gap: "1%",
-          }}
-        >
-          <DefaultBankDetailCard />
-          <OrderCalculate />
-        </div>
-      </>
-      ) : navigate("/")}
+      {sender ? (
+        <>
+          <AddBeneficiaryModal />
+          <SendersList />
+          <SenderProfile />
+          <BeneficiaryDetailCard />
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "space-between",
+              gap: "1%",
+            }}
+          >
+            <DefaultBankDetailCard />
+            <OrderCalculate />
+          </div>
+        </>
+      ) : (
+        navigate("/")
+      )}
     </div>
   );
 }

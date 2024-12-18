@@ -63,13 +63,18 @@ const App = (props) => {
             <Loading />
           ) : (
             <>
-            {senders.length === 0 ? (<div>
-              <Typography.Text>
-                No senders found
-              </Typography.Text>
-            </div>) : (
-             <> {senders.map(sender=><SendersItem sender={sender}/>)}</>
-            )}
+              {senders.length === 0 ? (
+                <div>
+                  <Typography.Text>No senders found</Typography.Text>
+                </div>
+              ) : (
+                <>
+                  {" "}
+                  {senders.map((sender) => (
+                    <SendersItem sender={sender} />
+                  ))}
+                </>
+              )}
               {/* <SendersItem />
               <SendersItem />
               <SendersItem /> */}

@@ -219,7 +219,7 @@ const OrderDetailModal = (props) => {
               <Text>Exchange Rate:</Text>
               <div>
                 <Text strong>
-                  {calculateDetail && calculateDetail.rate.toFixed(4)} ETB/USD
+                  {calculateDetail && calculateDetail.rate.toFixed(2)} ETB/USD
                 </Text>
               </div>
             </Col>

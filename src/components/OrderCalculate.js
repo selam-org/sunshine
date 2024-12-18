@@ -13,7 +13,7 @@ const { Option } = Select;
 const CurrencyConverter = () => {
   const [sendAmount, setSendAmount] = useState(0);
   const [receiveAmount, setReceiveAmount] = useState(0);
-  const [exchangeRate] = useState(118.0); // Example exchange rate
+  const [exchangeRate] = useState(134.0); // Example exchange rate
   const [charge, setCharge] = useState(0);
   const [grandTotal, setGrandTotal] = useState(0);
   const dispatch = useDispatch();
@@ -101,7 +101,7 @@ const CurrencyConverter = () => {
             level={5}
             style={{ color: "#FF6600", margin: 0, textAlign: "left" }}
           >
-            Exchange Rate: { calculateDetail && calculateDetail.rate.toFixed(4)}
+            Exchange Rate: {calculateDetail && calculateDetail.rate.toFixed(4)}
           </Title>
         </Col>
         <Col span={12} style={{ textAlign: "right" }}>

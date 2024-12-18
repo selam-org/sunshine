@@ -95,7 +95,10 @@ const slice = createSlice({
     },
     deleteOrderSuccess: (orders, action) => {
       orders.deleteOrderLoading = false;
-      orders.deleteOrderError = null;
+      orders.detailOrderModalVisible[action.payload.id] = false;
+      orders.orders = orders.orders.filter(
+        (order) => order.id !== action.payload.id
+      );
     },
     deleteOrderFailed: (orders, action) => {
       orders.deleteOrderLoading = false;
@@ -105,21 +108,6 @@ const slice = createSlice({
       orders.detailOrderModalVisible[action.payload.id] = action.payload.open;
     },
 
-    deleteOrderStart: (orders, action) => {
-      orders.deleteOrderLoading = true;
-      orders.deleteOrderError = null;
-    },
-    deleteOrderFailed: (orders, action) => {
-      orders.deleteOrderLoading = false;
-      orders.deleteOrderError = action.payload;
-    },
-    deleteOrderSuccess: (orders, action) => {
-      orders.deleteOrderLoading = false;
-      orders.detailOrderModalVisible[action.payload.id] = false;
-      orders.orders = orders.orders.filter(
-        (order) => order.id !== action.payload.id
-      );
-    },
     setDeleteOrderError: (orders, action) => {
       orders.deleteOrderError = action.payload;
     },
@@ -234,6 +222,7 @@ export const createOrderApiCall = (data) => (dispatch, getState) => {
     })
   );
 };
+
 export default slice.reducer;
 
 export const getCalculateDetail = createSelector(

@@ -6,7 +6,7 @@ import moment from "moment";
 const { RangePicker } = DatePicker;
 const { Option } = Select;
 
-const OrderFilter = () => {
+const OrderFilter = ({ onSubmit }) => {
   const dispatch = useDispatch();
   const loading = useSelector(getOrdersLoading);
   // const error = useSelector(getOrdersError);
@@ -47,8 +47,12 @@ const OrderFilter = () => {
       end_date: dateRange ? dateRange[1].endOf("day").valueOf() : undefined,
     };
 
-    console.log("Filter Values with Dates:", formattedValues);
+    if (formattedValues["status"] === "all") {
+      delete formattedValues["status"];
+    }
 
+    console.log("Filter Values with Dates:", formattedValues);
+    onSubmit(formattedValues);
     // Dispatch or handle the submission here
     dispatch(getOrdersApiCall(formattedValues));
   };
@@ -143,7 +147,6 @@ const OrderFilter = () => {
       <Form.Item
         name="dateRange"
         defaultValue={[moment(), moment()]}
-
         rules={[
           {
             type: "array",
@@ -179,8 +182,8 @@ const OrderFilter = () => {
           getPopupContainer={(trigger) => trigger.parentNode}
         >
           <Option value="">Not Void</Option>
-
           <Option value="void">Void</Option>
+          <Option value="all">All</Option>
         </Select>
       </Form.Item>
 
