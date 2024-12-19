@@ -6,6 +6,9 @@ import {
   getCalculateDetail,
   calculateOrderApiCall,
   getCalculateLoading,
+  getRateRange,
+  getRateRangeApiCall,
+  getRateRangeLoading,
 } from "../store/reducers/orders";
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -13,19 +16,54 @@ const { Option } = Select;
 const CurrencyConverter = () => {
   const [sendAmount, setSendAmount] = useState(0);
   const [receiveAmount, setReceiveAmount] = useState(0);
-  const [exchangeRate] = useState(134.0); // Example exchange rate
+  const [exchangeRate, setExchangeRate] = useState(0); // Example exchange rate
   const [charge, setCharge] = useState(0);
   const [grandTotal, setGrandTotal] = useState(0);
   const dispatch = useDispatch();
   const loading = useSelector(getCalculateLoading);
   const calculateDetail = useSelector(getCalculateDetail);
+  const rateRange = useSelector(getRateRange);
+  const rateRangeloading = useSelector(getRateRangeLoading);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await dispatch(getRateRangeApiCall());
+      } catch (error) {
+        console.error("Error fetching rate ranges:", error);
+      }
+    };
+    fetchData();
+  }, [dispatch]);
+
   useEffect(() => {
     if (calculateDetail) {
       setValues(calculateDetail);
     }
   }, [calculateDetail]);
+
+  const handleRateChange = () => {
+    const TOLERANCE = 1e-9;
+
+    if (
+      exchangeRate >= rateRange.range.min - TOLERANCE &&
+      exchangeRate <= rateRange.range.max + TOLERANCE
+    ) {
+      calculateFromSendAmount();
+      return;
+    }
+    setExchangeRate(rateRange.rate);
+  };
+
+  const addNewRateToData = (data) => {
+    if (exchangeRate !== 0 && exchangeRate !== rateRange.rate) {
+      data["rate"] = exchangeRate;
+    }
+    return data;
+  };
+
   const calculateFromSendAmount = () => {
-    dispatch(calculateOrderApiCall({ sent_usd: sendAmount }));
+    dispatch(calculateOrderApiCall(addNewRateToData({ sent_usd: sendAmount })));
     console.log("calculatedReceiveAmount", calculateDetail);
   };
   const setValues = (value) => {
@@ -33,14 +71,19 @@ const CurrencyConverter = () => {
     setCharge(value.commission.toFixed(2));
     setGrandTotal(value.total_usd.toFixed(2));
     setSendAmount(value.sent_usd.toFixed(2));
+    setExchangeRate(value.rate.toFixed(2));
   };
   const calculateFromReceiveAmount = () => {
-    dispatch(calculateOrderApiCall({ total_birr: receiveAmount }));
+    dispatch(
+      calculateOrderApiCall(addNewRateToData({ total_birr: receiveAmount }))
+    );
     console.log("calculatedReceiveAmount", calculateDetail);
   };
 
   const calculateFromGrandTotal = () => {
-    dispatch(calculateOrderApiCall({ total_usd: grandTotal }));
+    dispatch(
+      calculateOrderApiCall(addNewRateToData({ total_usd: grandTotal }))
+    );
     console.log("calculatedReceiveAmount", calculateDetail);
   };
 
@@ -103,6 +146,15 @@ const CurrencyConverter = () => {
           >
             Exchange Rate: {calculateDetail && calculateDetail.rate.toFixed(4)}
           </Title>
+          <Input
+            disabled={loading || rateRangeloading}
+            value={exchangeRate}
+            onChange={(e) => setExchangeRate(e.target.value)}
+            onBlur={handleRateChange}
+            placeholder=""
+            addonAfter="ETB"
+            style={{ marginTop: "8px", width: "60%", borderRadius: "8px" }}
+          />
         </Col>
         <Col span={12} style={{ textAlign: "right" }}>
           {loading && (
@@ -144,7 +196,7 @@ const CurrencyConverter = () => {
             style={{ fontSize: "18px", color: "#FF6600", paddingLeft: "8px" }}
           >
             {calculateDetail && calculateDetail.total_birr
-              ? calculateDetail.total_birr
+              ? calculateDetail.total_birr.toLocaleString()
               : 0}
           </Text>
         </Col>
@@ -157,7 +209,7 @@ const CurrencyConverter = () => {
             style={{ fontSize: "18px", color: "#FF6600", paddingLeft: "8px" }}
           >
             {calculateDetail && calculateDetail.total_usd
-              ? calculateDetail.total_usd
+              ? calculateDetail.total_usd.toLocaleString()
               : 0}
           </Text>
         </Col>

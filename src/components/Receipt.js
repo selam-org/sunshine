@@ -82,6 +82,22 @@ const ReceiptContent = (props) => {
     return prefix + randomNumber;
   }
 
+  const formatAddress = (sender) => {
+    if (!sender || !sender.address) {
+      return " ";
+    }
+
+    const { street, city, state } = sender.address;
+    const addressParts = [street, city, state].filter(Boolean); // Filter out null/undefined/empty strings
+    const formattedAddress = addressParts.join(", ");
+
+    return formattedAddress;
+  };
+
+  const formatZip = (sender) => {
+    return sender?.address?.zip_code || " ";
+  };
+
   function generateConfirmationNumber() {
     let result = "";
     for (let i = 0; i < 12; i++) {
@@ -95,8 +111,8 @@ const ReceiptContent = (props) => {
     sender_first_name: order_detail.sender.first_name,
     sender_last_name: order_detail.sender.last_name,
     sender_phone: order_detail.sender.phone_number,
-    sender_address: " ",
-    sender_zip: "",
+    sender_address: formatAddress(order_detail.sender),
+    sender_zip: formatZip(order_detail.sender),
   };
 
   const receiver_obj = {
@@ -249,10 +265,10 @@ const ReceiptContent = (props) => {
           </Col>
         </Row>
         <Row className="key-pair-row" align={"top"}>
-          <Col span={13} className="key-col">
+          <Col span={10} className="key-col">
             <p>Zip Code/ :</p>
           </Col>
-          <Col span={11} className="pair-col-bold">
+          <Col span={14} className="pair-col-bold">
             <p>{sender_obj.sender_zip}</p>
           </Col>
         </Row>

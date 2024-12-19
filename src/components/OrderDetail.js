@@ -50,6 +50,7 @@ const OrderDetailModal = (props) => {
     }
     dispatch(
       createOrderApiCall({
+        rate: calculateDetail.rate,
         receiver_id: beneficiary.id,
         sender_id: sender.id,
         sent_usd: calculateDetail.sent_usd,
