@@ -2,6 +2,9 @@ import { createSlice, createSelector } from "@reduxjs/toolkit";
 import * as action from "../api";
 
 const initialState = {
+  rateRange: null,
+  rateRangeLoading: false,
+  rateRangeError: null,
   orderCalculateDetail: null,
   calculateLoading: false,
   calculateDetailError: null,
@@ -26,6 +29,23 @@ const slice = createSlice({
   name: "orders",
   initialState,
   reducers: {
+    getRateRangeStart: (orders, action) => {
+      orders.rateRangeLoading = true;
+      orders.rateRangeError = null;
+      orders.rateRange = null;
+    },
+    getRateRangeSuccess: (orders, action) => {
+      console.log("range rate success", action.payload);
+
+      orders.rateRange = action.payload;
+      orders.rateRangeLoading = false;
+      orders.rateRangeError = null;
+    },
+    getRateRangeFailed: (orders, action) => {
+      orders.rateRangeLoading = false;
+      orders.rateRangeError = action.payload;
+    },
+
     calculateStart: (orders, action) => {
       orders.calculateLoading = true;
       orders.calculateDetailError = null;
@@ -33,7 +53,6 @@ const slice = createSlice({
     },
     calculateSuccess: (orders, action) => {
       console.log("calculate success", action.payload);
-
       orders.orderCalculateDetail = action.payload;
       orders.calculateLoading = false;
       orders.calculateDetailError = null;
@@ -155,7 +174,22 @@ export const {
   calculateStart,
   calculateSuccess,
   calculateFailed,
+  getRateRangeStart,
+  getRateRangeSuccess,
+  getRateRangeFailed,
 } = slice.actions;
+
+export const getRateRangeApiCall = (id) => (dispatch, getState) => {
+  dispatch(
+    action.apiCallBegan({
+      url: `rate/`,
+      onStart: getRateRangeStart.type,
+      onSuccess: getRateRangeSuccess.type,
+      onFailed: getRateRangeFailed.type,
+      method: "get",
+    })
+  );
+};
 
 export const deleteOrderApiCall = (id) => (dispatch, getState) => {
   dispatch(
@@ -210,7 +244,7 @@ export const calculateOrderApiCall = (data) => (dispatch, getState) => {
   );
 };
 export const createOrderApiCall = (data) => (dispatch, getState) => {
-  console.log("data create", data);
+  console.log("order data create", data);
   dispatch(
     action.apiCallBegan({
       url: "order",
@@ -224,6 +258,16 @@ export const createOrderApiCall = (data) => (dispatch, getState) => {
 };
 
 export default slice.reducer;
+
+export const getRateRange = createSelector(
+  (state) => state.entities.orders.rateRange,
+  (rateRange) => rateRange
+);
+
+export const getRateRangeLoading = createSelector(
+  (state) => state.entities.orders.rateRangeLoading,
+  (rateRange) => rateRange
+);
 
 export const getCalculateDetail = createSelector(
   (state) => state.entities.orders.orderCalculateDetail,

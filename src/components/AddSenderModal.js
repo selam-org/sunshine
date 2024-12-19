@@ -11,6 +11,7 @@ import {
   getSender,
 } from "../store/reducers/senders";
 import { useNavigate } from "react-router-dom";
+import zipcodes from "zipcodes";
 
 const AddSenderModal = () => {
   const dispatch = useDispatch();
@@ -50,6 +51,19 @@ const AddSenderModal = () => {
     // Add the reshaped address to the values
     new_values.address = address;
     return new_values;
+  };
+
+  const handleZipChange = (e) => {
+    const zip = e.target.value;
+    if (zip && zip.length === 5) {
+      const lookup = zipcodes.lookup(zip);
+      if (lookup) {
+        form.setFieldsValue({
+          city: lookup.city,
+          state: lookup.state,
+        });
+      }
+    }
   };
 
   const onFinish = (values) => {
@@ -258,8 +272,8 @@ const AddSenderModal = () => {
                     height: "40px",
                     borderColor: "#d9d9d9",
                   }}
+                  onChange={handleZipChange}
                   placeholder="ZIP Code"
-                  maxLength={6}
                 />
               </Form.Item>
             </Input.Group>

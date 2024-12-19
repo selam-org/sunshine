@@ -21,7 +21,8 @@
     "redux-persist": "^6.0.0",
     "sheetjs-style": "^0.15.8",
     "web-vitals": "^2.1.4",
-    "xlsx": "^0.18.5"
+    "xlsx": "^0.18.5",
+    "zipcodes": "^8.0.0"
   },
   "presets": [
     "react-app"
