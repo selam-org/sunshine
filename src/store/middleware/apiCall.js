@@ -26,7 +26,7 @@ const apiCall =
     console.log("baseURL", baseURL);
 
     try {
-      await sleep(2000);
+      // await sleep(2000);
       const response = await axios.request({
         // baseURL: "https://sunsine-backend-staging.onrender.com",
         baseURL,
