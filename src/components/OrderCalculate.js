@@ -34,7 +34,7 @@ const CurrencyConverter = () => {
       }
     };
     fetchData();
-  }, [dispatch]);
+  }, [dispatch, calculateDetail]);
 
   useEffect(() => {
     if (calculateDetail) {
@@ -46,17 +46,17 @@ const CurrencyConverter = () => {
     const TOLERANCE = 1e-9;
 
     if (
-      exchangeRate >= rateRange.range.min - TOLERANCE &&
-      exchangeRate <= rateRange.range.max + TOLERANCE
+      exchangeRate >= rateRange?.range.min - TOLERANCE &&
+      exchangeRate <= rateRange?.range.max + TOLERANCE
     ) {
       calculateFromSendAmount();
       return;
     }
-    setExchangeRate(rateRange.rate);
+    setExchangeRate(rateRange?.rate);
   };
 
   const addNewRateToData = (data) => {
-    if (exchangeRate !== 0 && exchangeRate !== rateRange.rate) {
+    if (exchangeRate !== 0 && exchangeRate !== rateRange?.rate) {
       data["rate"] = exchangeRate;
     }
     return data;

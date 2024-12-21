@@ -90,7 +90,11 @@ const slice = createSlice({
     },
     resetState: (orders, action) => {
       //   Object.assign(orders, initialState);
-      return initialState;
+      return {
+        ...initialState,
+        orderCalculateDetail: orders.orderCalculateDetail,
+        rateRange: orders.rateRange,
+      };
     },
 
     getOrdersStart: (orders, action) => {

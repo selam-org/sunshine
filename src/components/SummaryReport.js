@@ -10,14 +10,13 @@ const SummaryReportTable = () => {
     const summary = orders.reduce(
       (acc, order) => {
         acc.totalOrders += 1;
-        if (order.status === "void") {
-          acc.voidOrdersCount += 1;
-          return acc;
-        }
         acc.totalFee += order.commission;
         acc.totalSentUSD += order.sent_usd;
         acc.totalBirr += order.total_birr;
         acc.totalGrandTotal += order.total_usd;
+        if (order.status === "void") {
+          acc.voidOrdersCount += 1;
+        }
         return acc;
       },
       {
@@ -29,6 +28,18 @@ const SummaryReportTable = () => {
         voidOrdersCount: 0,
       }
     );
+
+    if (summary.voidOrdersCount !== summary.totalOrders) {
+      orders.forEach((order) => {
+        if (order.status !== "void") {
+          return;
+        }
+        summary.totalFee -= order.commission;
+        summary.totalSentUSD -= order.sent_usd;
+        summary.totalBirr -= order.total_birr;
+        summary.totalGrandTotal -= order.total_usd;
+      });
+    }
 
     return summary;
   }, [orders]);
