@@ -1,5 +1,7 @@
 import React, { useRef } from "react";
 import { Col, Row, Button } from "antd";
+import SHA256 from "crypto-js/sha256";
+
 // import "./Receipt.css";
 import "../style/components/receipt.css";
 import { useReactToPrint } from "react-to-print";
@@ -142,9 +144,20 @@ const ReceiptContent = (props) => {
   };
 
   const receiptTo = "Customer";
-  function generateRandom9DigitNumber() {
-    return Math.floor(100000000 + Math.random() * 900000000);
-  }
+
+  const generateIdentifier = (phone, firstName, lastName) => {
+    const data = `${phone}${firstName}${lastName}`.toLowerCase();
+
+    // Generate a hash from the data
+    const hash = SHA256(data).toString();
+
+    // Convert hash to a number
+    const hashInt = parseInt(hash, 16);
+
+    // Extract a 6-digit identifier, starting from 100000
+    const identifier = 100000 + (hashInt % 900000); // Ensures it's between 100000 and 999999
+    return identifier.toString();
+  };
 
   return (
     <div
@@ -237,7 +250,13 @@ const ReceiptContent = (props) => {
             <p>Account #/ :</p>
           </Col>
           <Col span={14} className="pair-col-bold">
-            <p>{generateRandom9DigitNumber()}</p>
+            <p>
+              {generateIdentifier(
+                sender_obj.sender_phone,
+                sender_obj.sender_first_name,
+                sender_obj.sender_last_name
+              )}
+            </p>
           </Col>
         </Row>
         <Row className="key-pair-row" align={"top"}>
@@ -285,7 +304,13 @@ const ReceiptContent = (props) => {
             <p>Account #/ :</p>
           </Col>
           <Col span={14} className="pair-col-bold">
-            <p>{generateRandom9DigitNumber()}</p>
+            <p>
+              {generateIdentifier(
+                receiver_obj.receiver_phone,
+                receiver_obj.receiver_first_name,
+                receiver_obj.receiver_last_name
+              )}
+            </p>
           </Col>
         </Row>
         <Row className="key-pair-row" align={"top"}>

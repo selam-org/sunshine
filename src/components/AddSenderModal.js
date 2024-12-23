@@ -198,6 +198,31 @@ const AddSenderModal = () => {
               }}
             />
           </Form.Item>
+          <Form.Item
+            name="street"
+            label="Street Address"
+            rules={[
+              {
+                required: true,
+                message: "Street address is required",
+              },
+              {
+                pattern: /^[a-zA-Z0-9\s,.'-]{3,}$/,
+                message: "Street address must be valid",
+              },
+            ]}
+          >
+            <Input
+              style={{
+                width: "100%",
+                marginBottom: "1%",
+                borderRadius: "8px",
+                height: "40px",
+                borderColor: "#d9d9d9",
+              }}
+              placeholder="Enter Street Address"
+            />
+          </Form.Item>
           <Form.Item label="Address" required>
             <Input.Group style={{ marginBottom: "2%" }}>
               <Form.Item
@@ -277,31 +302,6 @@ const AddSenderModal = () => {
                 />
               </Form.Item>
             </Input.Group>
-            <Form.Item
-              name="street"
-              label="Street Address"
-              rules={[
-                {
-                  required: true,
-                  message: "Street address is required",
-                },
-                {
-                  pattern: /^[a-zA-Z0-9\s,.'-]{3,}$/,
-                  message: "Street address must be valid",
-                },
-              ]}
-            >
-              <Input
-                style={{
-                  width: "100%",
-                  marginBottom: "1%",
-                  borderRadius: "8px",
-                  height: "40px",
-                  borderColor: "#d9d9d9",
-                }}
-                placeholder="Enter Street Address"
-              />
-            </Form.Item>
           </Form.Item>
 
           <Form.Item>
