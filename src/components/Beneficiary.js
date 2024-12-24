@@ -5,12 +5,12 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   getBeneficiary,
   setAddBeneficiaryModal,
-  setSenderIsDialog, 
+  setUpdateBeneficiaryModal,
+  setSenderIsDialog,
 } from "../store/reducers/senders";
+import UpdateBeneficiaryModal from "./UpdateBeneficiaryModal";
 
 const { Title, Text } = Typography;
-
-
 
 const BeneficiaryDetailCard = () => {
   const beneficiaryData = useSelector(getBeneficiary);
@@ -50,10 +50,13 @@ const BeneficiaryDetailCard = () => {
           Beneficiary
         </Title>
         <div style={{ display: "flex", gap: "6px" }}>
-          <Button onClick={()=>{
-            console.log("clicked");
-            dispatch(setSenderIsDialog({open: true}))
-          }} type="text" style={{ color: "#1890ff", fontWeight: "bold" }}>
+          <Button
+            onClick={() => {
+              dispatch(setSenderIsDialog({ open: true }));
+            }}
+            type="text"
+            style={{ color: "#1890ff", fontWeight: "bold" }}
+          >
             List Beneficiary
           </Button>
           <Button
@@ -68,6 +71,10 @@ const BeneficiaryDetailCard = () => {
           </Button>
           <Button
             type="text"
+            disabled={!beneficiaryData}
+            onClick={() => {
+              dispatch(setUpdateBeneficiaryModal({ open: true }));
+            }}
             icon={<EditOutlined />}
             style={{ color: "#1890ff", fontWeight: "bold" }}
           >
@@ -118,6 +125,7 @@ const BeneficiaryDetailCard = () => {
           </>
         )}
       </div>
+      <UpdateBeneficiaryModal />
     </Card>
   );
 };

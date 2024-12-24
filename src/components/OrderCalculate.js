@@ -18,6 +18,8 @@ const CurrencyConverter = () => {
   const [receiveAmount, setReceiveAmount] = useState(0);
   const [exchangeRate, setExchangeRate] = useState(0); // Example exchange rate
   const [charge, setCharge] = useState(0);
+  const [change, setChange] = useState(0);
+  const [cashReceived, setCashReceived] = useState(0);
   const [grandTotal, setGrandTotal] = useState(0);
   const dispatch = useDispatch();
   const loading = useSelector(getCalculateLoading);
@@ -72,6 +74,8 @@ const CurrencyConverter = () => {
     setGrandTotal(value.total_usd.toFixed(2));
     setSendAmount(value.sent_usd.toFixed(2));
     setExchangeRate(value.rate.toFixed(2));
+    setCashReceived(0);
+    setChange(0);
   };
   const calculateFromReceiveAmount = () => {
     dispatch(
@@ -85,6 +89,13 @@ const CurrencyConverter = () => {
       calculateOrderApiCall(addNewRateToData({ total_usd: grandTotal }))
     );
     console.log("calculatedReceiveAmount", calculateDetail);
+  };
+
+  const handleCashReceived = (cash) => {
+    if (calculateDetail) {
+      setCashReceived(cash);
+      setChange(cash - calculateDetail.total_usd);
+    }
   };
 
   return (
@@ -144,7 +155,7 @@ const CurrencyConverter = () => {
             level={5}
             style={{ color: "#FF6600", margin: 0, textAlign: "left" }}
           >
-            Exchange Rate: {calculateDetail && calculateDetail.rate.toFixed(4)}
+            Exchange Rate: {calculateDetail && calculateDetail.rate.toFixed(2)}
           </Title>
           <Input
             disabled={loading || rateRangeloading}
@@ -153,7 +164,7 @@ const CurrencyConverter = () => {
             onBlur={handleRateChange}
             placeholder=""
             addonAfter="ETB"
-            style={{ marginTop: "8px", width: "60%", borderRadius: "8px" }}
+            style={{ marginTop: "8px", width: "65%", borderRadius: "8px" }}
           />
         </Col>
         <Col span={12} style={{ textAlign: "right" }}>
@@ -237,15 +248,18 @@ const CurrencyConverter = () => {
       <Row gutter={[16, 16]} align="middle">
         <Col span={12}>
           <Input
-            disabled={loading}
+            disabled={loading || !calculateDetail}
             placeholder="0.00"
+            onChange={(e) => handleCashReceived(e.target.value)}
             addonBefore={<Text strong>Cash Received</Text>}
             style={{ borderRadius: "8px", backgroundColor: "#f7f7f7" }}
+            value={cashReceived}
           />
         </Col>
         <Col span={12}>
           <Input
             placeholder="0.00"
+            value={change}
             addonBefore={<Text strong>Change</Text>}
             disabled
             style={{
