@@ -6,17 +6,14 @@ import {
   getSender,
   getSenders,
   setSenderIsDialog,
+  setUpdateSenderDialog,
 } from "../store/reducers/senders";
 import { useNavigate } from "react-router-dom";
+import UpdateSenderModal from "./UpdateSenderModal";
 const { Title, Text } = Typography;
 
-// const senderData = {
-//   firstName: "John",
-//   lastName: "Doe",
-//   phoneNumber: "+1 (123) 456-7890",
-// };
-
 const SenderDetailCard = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const senderData = useSelector(getSender);
   const senders = useSelector(getSenders);
@@ -27,6 +24,7 @@ const SenderDetailCard = () => {
       setSenderIsDialog({ open: false });
     }
   }, [senders]);
+
   return (
     <Card
       style={{
@@ -63,6 +61,10 @@ const SenderDetailCard = () => {
         <Button
           type="text"
           icon={<EditOutlined />}
+          onClick={() => {
+            console.log("update clicked");
+            dispatch(setUpdateSenderDialog({ open: true }));
+          }}
           style={{ color: "#1890ff", fontWeight: "bold" }}
         >
           Edit
@@ -99,6 +101,7 @@ const SenderDetailCard = () => {
           </Col>
         </Row>
       </div>
+      <UpdateSenderModal />
     </Card>
   );
 };
