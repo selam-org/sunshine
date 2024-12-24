@@ -53,7 +53,7 @@ const Receipt = (props) => {
   );
 };
 const ReceiptContent = (props) => {
-  const { order_detail } = props;
+  const { order_detail, receiptTo } = props;
   function formatTimestamp(timestamp) {
     const date = new Date(Number(timestamp));
 
@@ -129,8 +129,8 @@ const ReceiptContent = (props) => {
     bank_name: order_detail.bank.bank,
     branch: "/",
     bank_account: order_detail.bank.account,
-    account_type: "Savings",
-    mode_pay_receiver: "Bank Deposit",
+    account_type: "SAVINGS ACCOUNT",
+    mode_pay_receiver: "BANK DEPOSIT",
   };
 
   const order = {
@@ -142,8 +142,6 @@ const ReceiptContent = (props) => {
     fee: order_detail.commission,
     total_pay_receiver: order_detail.total_birr.toFixed(2),
   };
-
-  const receiptTo = "Customer";
 
   const generateIdentifier = (phone, firstName, lastName) => {
     const data = `${phone}${firstName}${lastName}`.toLowerCase();
@@ -209,13 +207,13 @@ const ReceiptContent = (props) => {
         </div>
       </div>
       <div className="copy-to">
-        <p>{receiptTo} Copy/ :</p>
+        <p>{receiptTo} Copy:</p>
       </div>
 
       <div className="key-pair">
         <Row className="key-pair-row" align={"middle"}>
           <Col span={12} className="key-col">
-            <p>Date/ :</p>
+            <p>Date:</p>
           </Col>
           <Col span={12} className="pair-col">
             <p>{order.date}</p>
@@ -223,7 +221,7 @@ const ReceiptContent = (props) => {
         </Row>
         <Row className="key-pair-row" align={"middle"}>
           <Col span={12} className="key-col">
-            <p>Invoice #/ :</p>
+            <p>Invoice #:</p>
           </Col>
           <Col span={12} className="pair-col">
             <p>{order.invoice_number}</p>
@@ -231,7 +229,7 @@ const ReceiptContent = (props) => {
         </Row>
         <Row className="key-pair-row" align={"middle"}>
           <Col span={12} className="key-col">
-            <p>Txn Ref No/ : </p>
+            <p>Txn Ref No: </p>
           </Col>
           <Col span={12} className="pair-col">
             <p>{order.confirmation_no}</p>
@@ -242,12 +240,12 @@ const ReceiptContent = (props) => {
       <div className="key-pair">
         <Row className="key-pair-title">
           <Col span={24} className="pair-col-bold" align="middle">
-            <p className="pair-col-bold ">SENDER/ :</p>
+            <p className="pair-col-bold ">SENDER:</p>
           </Col>
         </Row>
         <Row className="key-pair-row" align={"top"}>
           <Col span={10} className="key-col">
-            <p>Account #/ :</p>
+            <p>Account #:</p>
           </Col>
           <Col span={14} className="pair-col-bold">
             <p>
@@ -261,7 +259,7 @@ const ReceiptContent = (props) => {
         </Row>
         <Row className="key-pair-row" align={"top"}>
           <Col span={10} className="key-col">
-            <p>Name/ :</p>
+            <p>Name:</p>
           </Col>
           <Col span={14} className="pair-col-bold">
             <p>{`${sender_obj.sender_first_name} ${sender_obj.sender_last_name}`}</p>
@@ -269,7 +267,7 @@ const ReceiptContent = (props) => {
         </Row>
         <Row className="key-pair-row" align={"top"}>
           <Col span={10} className="key-col">
-            <p>Telephone/ :</p>
+            <p>Telephone:</p>
           </Col>
           <Col span={14} className="pair-col-bold">
             <p>{sender_obj.sender_phone}</p>
@@ -277,7 +275,7 @@ const ReceiptContent = (props) => {
         </Row>
         <Row className="key-pair-row" align={"top"}>
           <Col span={10} className="key-col">
-            <p>Address/ :</p>
+            <p>Address:</p>
           </Col>
           <Col span={14} className="pair-col-bold">
             <p>{sender_obj.sender_address}</p>
@@ -285,7 +283,7 @@ const ReceiptContent = (props) => {
         </Row>
         <Row className="key-pair-row" align={"top"}>
           <Col span={10} className="key-col">
-            <p>Zip Code/ :</p>
+            <p>Zip Code:</p>
           </Col>
           <Col span={14} className="pair-col-bold">
             <p>{sender_obj.sender_zip}</p>
@@ -296,12 +294,12 @@ const ReceiptContent = (props) => {
       <div className="key-pair">
         <Row className="key-pair-title">
           <Col span={24} className="pair-col-bold" align="middle">
-            <p className="pair-col-bold ">BENEFICIARY/ :</p>
+            <p className="pair-col-bold ">RECIPIENT:</p>
           </Col>
         </Row>
         <Row className="key-pair-row" align={"top"}>
           <Col span={10} className="key-col">
-            <p>Account #/ :</p>
+            <p>Account #:</p>
           </Col>
           <Col span={14} className="pair-col-bold">
             <p>
@@ -315,7 +313,7 @@ const ReceiptContent = (props) => {
         </Row>
         <Row className="key-pair-row" align={"top"}>
           <Col span={10} className="key-col">
-            <p>Name/ :</p>
+            <p>Name:</p>
           </Col>
           <Col span={14} className="pair-col-bold">
             <p>{`${receiver_obj.receiver_first_name} ${receiver_obj.receiver_last_name}`}</p>
@@ -323,7 +321,7 @@ const ReceiptContent = (props) => {
         </Row>
         <Row className="key-pair-row" align={"top"}>
           <Col span={10} className="key-col">
-            <p>Telephone/ :</p>
+            <p>Telephone:</p>
           </Col>
           <Col span={14} className="pair-col-bold">
             <p>{receiver_obj.receiver_phone}</p>
@@ -331,7 +329,7 @@ const ReceiptContent = (props) => {
         </Row>
         <Row className="key-pair-row" align={"top"}>
           <Col span={10} className="key-col">
-            <p>Address/ :</p>
+            <p>Address:</p>
           </Col>
           <Col span={14} className="pair-col-bold">
             <p>{receiver_obj.receiver_address}</p>
@@ -339,7 +337,7 @@ const ReceiptContent = (props) => {
         </Row>
         <Row className="key-pair-row" align={"top"}>
           <Col span={10} className="key-col">
-            <p>Bank/Branch/ :</p>
+            <p>Bank/Branch:</p>
           </Col>
           <Col span={14} className="pair-col-bold">
             <p>
@@ -349,7 +347,7 @@ const ReceiptContent = (props) => {
         </Row>
         <Row className="key-pair-row" align={"top"}>
           <Col span={10} className="key-col">
-            <p>Account/ :</p>
+            <p>Account:</p>
           </Col>
           <Col span={14} className="pair-col-bold">
             <p>{payment_info_obj.bank_account}</p>
@@ -357,7 +355,7 @@ const ReceiptContent = (props) => {
         </Row>
         <Row className="key-pair-row" align={"top"}>
           <Col span={10} className="key-col">
-            <p>Type/ :</p>
+            <p>Type:</p>
           </Col>
           <Col span={14} className="pair-col-bold">
             <p>{payment_info_obj.account_type}</p>
@@ -367,42 +365,42 @@ const ReceiptContent = (props) => {
       <HorizontalLine />
       <Row className="key-pair-title  amount-title">
         <Col span={24} className="pair-col-bold" align="middle">
-          <p className="pair-col-bold ">AMOUNT AND CHARGES/ :</p>
+          <p className="pair-col-bold ">AMOUNT AND CHARGES:</p>
         </Col>
       </Row>
       <div className="receipt-table">
         <div className="row">
-          <p className="td td-1 pair-col-bold">Amount/ :</p>
+          <p className="td td-1 pair-col-bold">Transfer Amount:</p>
           <p className="td td-2 pair-col">
             USD {order.net_amount_receiver - order.fee}
           </p>
         </div>
         <div className="row">
-          <p className="td td-1 pair-col">Rate/ :</p>
+          <p className="td td-1 pair-col">Exchange Rate:</p>
           <p className="td td-2 pair-col">ETB {order.rate_change_receiver}</p>
         </div>
         <div className="row">
-          <p className="td td-1 pair-col">Fee :</p>
+          <p className="td td-1 pair-col">Transfer Fee :</p>
           <p className="td td-2 pair-col">USD {order.fee}</p>
         </div>
         <div className="row">
-          <p className="td td-1 pair-col">Handling/ :</p>
+          <p className="td td-1 pair-col">Handling:</p>
           <p className="td td-2 pair-col">0.00</p>
         </div>
         <div className="row">
-          <p className="td td-1 pair-col-bold">Total Charges/ :</p>
+          <p className="td td-1 pair-col-bold">Total Charges:</p>
           <p className="td td-2 pair-col">USD {order.fee}</p>
         </div>
         <div className="row ">
-          <p className="td td-1 pair-col-bold reward-row">Reward Amount/ :</p>
+          <p className="td td-1 pair-col-bold reward-row">Reward Amount:</p>
           <p className="td td-2 pair-col">USD 0.00</p>
         </div>
         <div className="row">
-          <p className="td td-1 pair-col-bold">Total Tax/ :</p>
+          <p className="td td-1 pair-col-bold">Transfer Taxes:</p>
           <p className="td td-2 pair-col">USD 0.00</p>
         </div>
         <div className="row">
-          <p className="td td-1 pair-col-bold">Total/ :</p>
+          <p className="td td-1 pair-col-bold">Total:</p>
           <p className="td td-2 pair-col">
             USD {parseFloat(order.net_amount_receiver)}
           </p>
@@ -410,13 +408,13 @@ const ReceiptContent = (props) => {
       </div>
       <Row className="key-pair-title">
         <Col span={24} className="pair-col-bold" align="middle">
-          <p className="pair-col-bold ">Payee/ :</p>
+          <p className="pair-col-bold ">Payee:</p>
         </Col>
       </Row>
       <Row className="key-pair-row" align={"middle"}>
         <Col span={10} className="key-col">
           <p>Confirmation</p>
-          <p> No./ :</p>
+          <p> No.:</p>
         </Col>
         <Col span={14}>
           <span className="confirmation-no-value">{order.confirmation_no}</span>
@@ -432,7 +430,7 @@ const ReceiptContent = (props) => {
       </Row>
       <Row className="key-pair-row" align={"top"}>
         <Col span={14} className="key-col">
-          <p>Will Pay/ :</p>
+          <p>Message:</p>
         </Col>
         <Col span={8} className="pair-col-bold">
           <p>ETB {order.total_pay_receiver}</p>
@@ -447,7 +445,7 @@ const ReceiptContent = (props) => {
       <Row className="key-pair-title">
         <Col span={24} align="middle">
           <p className="pair-col-bold">
-            Important Notices/ : Conditions of Services/
+            Important Notices: Conditions of Services:
           </p>
         </Col>
       </Row>
@@ -502,12 +500,12 @@ const ReceiptContent = (props) => {
           </span>
         </p>
         <p className="red-info">
-          BEWARE - Never send money to someone you don't really know!/ :
+          BEWARE - Never send money to someone you don't really know!:
         </p>
         <HorizontalLine />
         <Row className="key-pair-title">
           <Col span={24} align="middle">
-            <p className="send-signature">sender signature/ :</p>
+            <p className="send-signature">sender signature:</p>
           </Col>
         </Row>
         <HorizontalLine />
