@@ -23,7 +23,7 @@ const OrderDetailModal = (props) => {
   const beneficiary = useSelector(getBeneficiary);
   const calculateDetail = useSelector(getCalculateDetail);
   const isCreateOrderModalOpen = useSelector(getIsCreateOrderModalOpen);
-  const [priority, setPriority] = useState("");
+  const [priority, setPriority] = useState("regular");
 
   const showModal = () => {
     dispatch(setIsCreateOrderModalOpen({ open: true }));
