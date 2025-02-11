@@ -26,10 +26,10 @@ const UpdateSenderModal = () => {
         first_name: sender.first_name,
         last_name: sender.last_name,
         phone_number: sender.phone_number,
-        street: sender?.address.street,
-        city: sender?.address.city,
-        state: sender?.address.state,
-        zip_code: sender?.address.zip_code,
+        street: sender?.address?.street,
+        city: sender?.address?.city,
+        state: sender?.address?.state,
+        zip_code: sender?.address?.zip_code,
       });
     }
   }, [sender, form]);
