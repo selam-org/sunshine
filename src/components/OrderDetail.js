@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Modal, Button, Typography, Row, Col, Divider } from "antd";
+import { Modal, Button, Typography, Row, Col, Divider, Select } from "antd";
 import { getBeneficiary, getSender } from "../store/reducers/senders";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -23,6 +23,8 @@ const OrderDetailModal = (props) => {
   const beneficiary = useSelector(getBeneficiary);
   const calculateDetail = useSelector(getCalculateDetail);
   const isCreateOrderModalOpen = useSelector(getIsCreateOrderModalOpen);
+  const [priority, setPriority] = useState("");
+
   const showModal = () => {
     dispatch(setIsCreateOrderModalOpen({ open: true }));
   };
@@ -55,6 +57,7 @@ const OrderDetailModal = (props) => {
         sender_id: sender.id,
         sent_usd: calculateDetail.sent_usd,
         receiver_bank_id: beneficiary.default_bank.id,
+        priority: priority,
       })
     );
   };
@@ -227,6 +230,26 @@ const OrderDetailModal = (props) => {
           </Row>
 
           <Divider style={{ margin: "8px 0" }} />
+
+          <Title level={4} style={{ marginBottom: 0, color: "#231e61" }}>
+            Order Priority
+          </Title>
+          <Divider style={{ margin: "0 0 17px 0" }} />
+          <Row gutter={[16, 8]}>
+            <Col span={24}>
+              <Select
+                value={priority}
+                onChange={(value) => setPriority(value)}
+                style={{ width: "60%" }}
+              >
+                <Select.Option value="regular">Regular</Select.Option>
+                <Select.Option value="urgent">Urgent</Select.Option>
+                <Select.Option value="top_urgent">Top Urgent</Select.Option>
+              </Select>
+            </Col>
+          </Row>
+
+          <Divider style={{ margin: "16px 0" }} />
 
           <Row gutter={[16, 8]}>
             <Col span={12}>

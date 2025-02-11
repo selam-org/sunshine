@@ -21,6 +21,16 @@ const OrdersPage = () => {
     setFilterValues(values);
   };
 
+  const getPriority = (priority) => {
+    if (priority === "urgent") {
+      return "Urgent";
+    } else if (priority === "top_urgent") {
+      return "Top Urgent";
+    } else {
+      return "Regular";
+    }
+  };
+
   const handleExport = () => {
     // Format the orders data for export
     const formattedData = orders.map((order) => ({
@@ -78,6 +88,7 @@ const OrdersPage = () => {
       "Send Date": moment(parseInt(order.created_at)).format(
         "MM/DD/YYYY h:mm:ss A"
       ),
+      Priority: getPriority(order.priority),
     }));
 
     // Create a new worksheet
